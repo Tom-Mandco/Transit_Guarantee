@@ -1,0 +1,1 @@
+c:\users\tsmith\documents\visual studio 2015\Projects\BasicOracleConnectivityConsoleApp\BasicOracleConnectivityConsoleApp\bin\Release\MCO.TemplateConsoleConnectionApp.Application.exe.config

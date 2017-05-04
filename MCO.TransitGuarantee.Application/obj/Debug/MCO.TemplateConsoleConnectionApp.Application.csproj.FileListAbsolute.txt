@@ -1,0 +1,2 @@
+c:\users\tsmith\documents\visual studio 2015\Projects\BasicOracleConnectivityConsoleApp\BasicOracleConnectivityConsoleApp\bin\Debug\MCO.TemplateConsoleConnectionApp.Application.exe.config
+F:\dev\Git\Helpful_Libraries\Skeleton_Console_App\MCO.TemplateConsoleConnectionApp.Application\bin\Debug\MCO.TemplateConsoleConnectionApp.Application.exe.config

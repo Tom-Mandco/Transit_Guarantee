@@ -1,0 +1,9 @@
+c:\users\tsmith\documents\visual studio 2015\Projects\BasicOracleConnectivityConsoleApp\MCO.TemplateConsoleConnectionApp.Data\obj\QA\MCO.TemplateConsoleConnectionApp.Data.csprojResolveAssemblyReference.cache
+C:\Users\tsmith\Documents\visual studio 2015\Projects\BasicOracleConnectivityConsoleApp\MCO.TemplateConsoleConnectionApp.Data\bin\QA\MCO.TemplateConsoleConnectionApp.Data.dll
+C:\Users\tsmith\Documents\visual studio 2015\Projects\BasicOracleConnectivityConsoleApp\MCO.TemplateConsoleConnectionApp.Data\bin\QA\MCO.TemplateConsoleConnectionApp.Data.pdb
+C:\Users\tsmith\Documents\visual studio 2015\Projects\BasicOracleConnectivityConsoleApp\MCO.TemplateConsoleConnectionApp.Data\bin\QA\MandCo.Data.dll
+C:\Users\tsmith\Documents\visual studio 2015\Projects\BasicOracleConnectivityConsoleApp\MCO.TemplateConsoleConnectionApp.Data\bin\QA\System.Data.SQLite.dll
+C:\Users\tsmith\Documents\visual studio 2015\Projects\BasicOracleConnectivityConsoleApp\MCO.TemplateConsoleConnectionApp.Data\bin\QA\Oracle.ManagedDataAccess.dll
+C:\Users\tsmith\Documents\visual studio 2015\Projects\BasicOracleConnectivityConsoleApp\MCO.TemplateConsoleConnectionApp.Data\bin\QA\System.Data.SQLite.xml
+C:\Users\tsmith\Documents\visual studio 2015\Projects\BasicOracleConnectivityConsoleApp\MCO.TemplateConsoleConnectionApp.Data\obj\QA\MCO.TemplateConsoleConnectionApp.Data.dll
+C:\Users\tsmith\Documents\visual studio 2015\Projects\BasicOracleConnectivityConsoleApp\MCO.TemplateConsoleConnectionApp.Data\obj\QA\MCO.TemplateConsoleConnectionApp.Data.pdb
