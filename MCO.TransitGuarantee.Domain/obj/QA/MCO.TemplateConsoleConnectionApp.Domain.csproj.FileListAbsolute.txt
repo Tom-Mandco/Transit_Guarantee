@@ -1,5 +1,0 @@
-c:\users\tsmith\documents\visual studio 2015\Projects\BasicOracleConnectivityConsoleApp\MCO.TemplateConsoleConnectionApp.Domain\bin\QA\MCO.TemplateConsoleConnectionApp.Domain.dll
-c:\users\tsmith\documents\visual studio 2015\Projects\BasicOracleConnectivityConsoleApp\MCO.TemplateConsoleConnectionApp.Domain\bin\QA\MCO.TemplateConsoleConnectionApp.Domain.pdb
-c:\users\tsmith\documents\visual studio 2015\Projects\BasicOracleConnectivityConsoleApp\MCO.TemplateConsoleConnectionApp.Domain\obj\QA\MCO.TemplateConsoleConnectionApp.Domain.csprojResolveAssemblyReference.cache
-c:\users\tsmith\documents\visual studio 2015\Projects\BasicOracleConnectivityConsoleApp\MCO.TemplateConsoleConnectionApp.Domain\obj\QA\MCO.TemplateConsoleConnectionApp.Domain.dll
-c:\users\tsmith\documents\visual studio 2015\Projects\BasicOracleConnectivityConsoleApp\MCO.TemplateConsoleConnectionApp.Domain\obj\QA\MCO.TemplateConsoleConnectionApp.Domain.pdb

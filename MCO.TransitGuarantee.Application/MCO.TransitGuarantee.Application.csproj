@@ -109,11 +109,11 @@
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MCO.TemplateConsoleConnectionApp.Data\MCO.TemplateConsoleConnectionApp.Data.csproj">
+    <ProjectReference Include="..\MCO.TransitGuarantee.Data\MCO.TransitGuarantee.Data.csproj">
       <Project>{296b4acb-eec8-4a50-8a4d-9a7de2303d76}</Project>
       <Name>MCO.TemplateConsoleConnectionApp.Data</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MCO.TemplateConsoleConnectionApp.Domain\MCO.TemplateConsoleConnectionApp.Domain.csproj">
+    <ProjectReference Include="..\MCO.TransitGuarantee.Domain\MCO.TransitGuarantee.Domain.csproj">
       <Project>{1a469094-b658-40c2-af8c-bff4fd6dff57}</Project>
       <Name>MCO.TemplateConsoleConnectionApp.Domain</Name>
     </ProjectReference>
