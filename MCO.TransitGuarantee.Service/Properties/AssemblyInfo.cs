@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("MCO.TransitGuarantee.Data")]
+[assembly: AssemblyTitle("MCO.TransitGuarantee.Service")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("HP Inc.")]
-[assembly: AssemblyProduct("MCO.TransitGuarantee.Data")]
+[assembly: AssemblyProduct("MCO.TransitGuarantee.Service")]
 [assembly: AssemblyCopyright("Copyright © HP Inc. 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("296b4acb-eec8-4a50-8a4d-9a7de2303d76")]
+[assembly: Guid("5e3069f4-d4b1-4e7f-ae9a-3d22455b7ebd")]
 
 // Version information for an assembly consists of the following four values:
 //

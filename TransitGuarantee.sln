@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MCO.TransitGuarantee.Data",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MCO.TransitGuarantee.Domain", "MCO.TransitGuarantee.Domain\MCO.TransitGuarantee.Domain.csproj", "{1A469094-B658-40C2-AF8C-BFF4FD6DFF57}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MCO.TransitGuarantee.Service", "MCO.TransitGuarantee.Service\MCO.TransitGuarantee.Service.csproj", "{5E3069F4-D4B1-4E7F-AE9A-3D22455B7EBD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,14 @@ Global
 		{1A469094-B658-40C2-AF8C-BFF4FD6DFF57}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1A469094-B658-40C2-AF8C-BFF4FD6DFF57}.Test|Any CPU.ActiveCfg = Test|Any CPU
 		{1A469094-B658-40C2-AF8C-BFF4FD6DFF57}.Test|Any CPU.Build.0 = Test|Any CPU
+		{5E3069F4-D4B1-4E7F-AE9A-3D22455B7EBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E3069F4-D4B1-4E7F-AE9A-3D22455B7EBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E3069F4-D4B1-4E7F-AE9A-3D22455B7EBD}.QA|Any CPU.ActiveCfg = Release|Any CPU
+		{5E3069F4-D4B1-4E7F-AE9A-3D22455B7EBD}.QA|Any CPU.Build.0 = Release|Any CPU
+		{5E3069F4-D4B1-4E7F-AE9A-3D22455B7EBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E3069F4-D4B1-4E7F-AE9A-3D22455B7EBD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E3069F4-D4B1-4E7F-AE9A-3D22455B7EBD}.Test|Any CPU.ActiveCfg = Release|Any CPU
+		{5E3069F4-D4B1-4E7F-AE9A-3D22455B7EBD}.Test|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -117,6 +117,10 @@
       <Project>{1a469094-b658-40c2-af8c-bff4fd6dff57}</Project>
       <Name>MCO.TemplateConsoleConnectionApp.Domain</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MCO.TransitGuarantee.Service\MCO.TransitGuarantee.Service.csproj">
+      <Project>{5e3069f4-d4b1-4e7f-ae9a-3d22455b7ebd}</Project>
+      <Name>MCO.TransitGuarantee.Service</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

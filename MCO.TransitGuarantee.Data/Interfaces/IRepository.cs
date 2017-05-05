@@ -1,4 +1,4 @@
-﻿namespace MCO.TemplateConsoleConnectionApp.Data.Interfaces
+﻿namespace MCO.TransitGuarantee.Data.Interfaces
 {
     public interface IRepository
     {

@@ -1,4 +1,4 @@
-﻿namespace MCO.TemplateConsoleConnectionApp.Application
+﻿namespace MCO.TransitGuarantee.Application
 {
     using Classes;
     using Interfaces;
@@ -6,6 +6,8 @@
     using Data.Interfaces;
     using Domain.Classes;
     using Domain.Interfaces;
+    using Service.Classes;
+    using Service.Interfaces;
 
     using NLog;
     using Ninject.Modules;
@@ -35,6 +37,7 @@
             Bind(typeof(IApp)).To(typeof(App));
             Bind(typeof(IDataHandler)).To(typeof(DataHandler));
             Bind(typeof(IPerformLookup)).To(typeof(PerformLookup));
+            Bind(typeof(ICalculationHandler)).To(typeof(CalculationHandler));
             Bind(typeof(IRepository)).To(typeof(OracleRepository)).InSingletonScope().WithConstructorArgument("connectionString", connectionString);
         }
     }

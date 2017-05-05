@@ -1,4 +1,4 @@
-﻿namespace MCO.TemplateConsoleConnectionApp.Application
+﻿namespace MCO.TransitGuarantee.Application
 {
     using Ninject;
     using Ninject.Modules;

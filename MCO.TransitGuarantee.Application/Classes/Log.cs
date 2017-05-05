@@ -1,4 +1,4 @@
-﻿namespace MCO.TemplateConsoleConnectionApp.Application.Classes
+﻿namespace MCO.TransitGuarantee.Application.Classes
 {
     using NLog;
     using Interfaces;

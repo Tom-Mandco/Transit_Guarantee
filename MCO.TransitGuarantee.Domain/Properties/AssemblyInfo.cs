@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("MCO.TemplateConsoleConnectionApp.Domain")]
+[assembly: AssemblyTitle("MCO.TransitGuarantee.Domain")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("HP Inc.")]
-[assembly: AssemblyProduct("MCO.TemplateConsoleConnectionApp.Domain")]
+[assembly: AssemblyProduct("MCO.TransitGuarantee.Domain")]
 [assembly: AssemblyCopyright("Copyright © HP Inc. 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

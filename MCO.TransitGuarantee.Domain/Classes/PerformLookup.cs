@@ -1,4 +1,4 @@
-﻿namespace MCO.TemplateConsoleConnectionApp.Domain.Classes
+﻿namespace MCO.TransitGuarantee.Domain.Classes
 {
     using Interfaces;
 

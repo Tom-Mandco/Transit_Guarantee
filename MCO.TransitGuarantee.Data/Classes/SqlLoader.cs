@@ -1,4 +1,4 @@
-﻿namespace MCO.TemplateConsoleConnectionApp.Data.Classes
+﻿namespace MCO.TransitGuarantee.Data.Classes
 {
     using System.IO;
 
