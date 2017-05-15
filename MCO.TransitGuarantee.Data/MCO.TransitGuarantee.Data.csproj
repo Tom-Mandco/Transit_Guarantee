@@ -7,8 +7,8 @@
     <ProjectGuid>{296B4ACB-EEC8-4A50-8A4D-9A7DE2303D76}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MCO.TemplateConsoleConnectionApp.Data</RootNamespace>
-    <AssemblyName>MCO.TemplateConsoleConnectionApp.Data</AssemblyName>
+    <RootNamespace>MCO.TransitGuarantee.Data</RootNamespace>
+    <AssemblyName>MCO.TransitGuarantee.Data</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -62,17 +62,28 @@
     <Compile Include="Classes\OracleRepository.cs" />
     <Compile Include="Classes\SqlLoader.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
+    <Compile Include="Models\Consignment_DataModel.cs" />
+    <Compile Include="Models\InvoiceDetail_DataModel.cs" />
+    <Compile Include="Models\InvoiceHeader_DataModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-    <Folder Include="Sql\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="F:\dev\MCO\Lib\MCO.Data\MandCo.Data.csproj">
       <Project>{b2e29057-6d25-425f-ae37-c54a5b9ea271}</Project>
       <Name>MandCo.Data</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Sql\Fetch_AllActiveConsignments.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sql\Fetch_ConsignmentInvoiceDetails.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sql\Fetch_ConsignmentInvoiceHeader.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

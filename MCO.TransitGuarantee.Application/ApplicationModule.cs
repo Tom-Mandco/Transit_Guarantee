@@ -38,6 +38,8 @@
             Bind(typeof(IDataHandler)).To(typeof(DataHandler));
             Bind(typeof(IPerformLookup)).To(typeof(PerformLookup));
             Bind(typeof(ICalculationHandler)).To(typeof(CalculationHandler));
+            Bind(typeof(IDateTimeConcatenator)).To(typeof(DateTimeConcatenator));
+            Bind(typeof(IViewModelDataAdapter)).To(typeof(ViewModelDataAdapter));
             Bind(typeof(IRepository)).To(typeof(OracleRepository)).InSingletonScope().WithConstructorArgument("connectionString", connectionString);
         }
     }

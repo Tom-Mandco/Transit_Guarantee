@@ -41,10 +41,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\CalculationHandler.cs" />
+    <Compile Include="Classes\DateTimeConcatenator.cs" />
     <Compile Include="Interfaces\ICalculationHandler.cs" />
+    <Compile Include="Interfaces\IDateTimeConcatenator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\MCO.TransitGuarantee.Data\MCO.TransitGuarantee.Data.csproj">
+      <Project>{296b4acb-eec8-4a50-8a4d-9a7de2303d76}</Project>
+      <Name>MCO.TransitGuarantee.Data</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

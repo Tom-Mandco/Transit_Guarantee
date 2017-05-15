@@ -7,8 +7,8 @@
     <ProjectGuid>{1A469094-B658-40C2-AF8C-BFF4FD6DFF57}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MCO.TemplateConsoleConnectionApp.Domain</RootNamespace>
-    <AssemblyName>MCO.TemplateConsoleConnectionApp.Domain</AssemblyName>
+    <RootNamespace>MCO.TransitGuarantee.Domain</RootNamespace>
+    <AssemblyName>MCO.TransitGuarantee.Domain</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -64,6 +64,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MCO.TransitGuarantee.Data\MCO.TransitGuarantee.Data.csproj">
+      <Project>{296b4acb-eec8-4a50-8a4d-9a7de2303d76}</Project>
+      <Name>MCO.TransitGuarantee.Data</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
