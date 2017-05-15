@@ -4,6 +4,7 @@
     using Models;
     using System;
     using System.Collections.Generic;
+    using System.Configuration;
     using System.IO;
 
     public class App : IApp
@@ -23,25 +24,34 @@
 
             IEnumerable<Consignment> consignmentData = dataHandler.Return_AllActiveConsignments_ToViewModel();
 
+            string consigmentTotalValueKey = ConfigurationManager.AppSettings["ConsTotalValueKey"];
+            string consigmentTotalVATKey = ConfigurationManager.AppSettings["ConsTotalVATKey"];
+            string consigmentTotalDutyKey = ConfigurationManager.AppSettings["ConsTotalDutyKey"];
+
             List<string> output = new List<string>();
 
             foreach (Consignment _consignment in consignmentData)
             {
-                output.Add(string.Format("Consignment: {0} | Carrier Code: {1}",
+                Dictionary<string, double> _ConsignmentTotals = dataHandler.Return_ConsignmentTotals_ToDictionary(_consignment);
+
+                output.Add(string.Format("Consignment: {0} | Carrier Code: {1} | Total Value: {2} | Duty: {3} | VAT : {4}",
                                    _consignment.Consignment_Number,
-                                   _consignment.Carrier_Code
+                                   _consignment.Carrier_Code,
+                                   _ConsignmentTotals[consigmentTotalValueKey],
+                                   _ConsignmentTotals[consigmentTotalVATKey],
+                                   _ConsignmentTotals[consigmentTotalDutyKey]
                                    ));
 
                 foreach(Invoice_Header _header in _consignment.Invoice_Headers)
                 {
-                    output.Add(string.Format(" - Supplier Invoice Number {0} | Invoice Currency: {1} | Invoice Total : {2}|",
+                    output.Add(string.Format(" - Supplier Invoice Number {0} | Invoice Currency: {1} ",
                                             _header.Supplier_Invoice_Number,
                                             _header.Invoice_Currency
                                             ));
 
                     foreach(Invoice_Detail _detail in _header.Invoice_Details)
                     {
-                        output.Add(string.Format(" - - Order No: {0} | Lot No: {1} | Commodity Code: {6} | Duty Pct: {7} | VAT INV Values: {2} / {3} / {4} / {5}",
+                        output.Add(string.Format(" - - Order No: {0} | Lot No: {1} | Commodity Code: {6} | Duty Pct: {7} | VAT Invoice Values: {2} / {3} / {4} / {5}",
                                            _detail.Order_No,
                                            _detail.Lot_No,
                                            _detail.Vat_A_Value,

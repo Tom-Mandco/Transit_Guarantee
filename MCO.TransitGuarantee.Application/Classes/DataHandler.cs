@@ -4,6 +4,7 @@
     using Domain.Interfaces;
     using Models;
     using Data.Models;
+    using Service.Interfaces;
     using System;
     using System.Configuration;
     using System.Collections.Generic;
@@ -12,11 +13,13 @@
     {
         private readonly IPerformLookup performLookup;
         private readonly IViewModelDataAdapter viewModelAdapter;
+        private readonly ICalculationHandler calculationHandler;
 
-        public DataHandler(IPerformLookup performLookup, IViewModelDataAdapter viewModelAdapter)
+        public DataHandler(IPerformLookup performLookup, IViewModelDataAdapter viewModelAdapter, ICalculationHandler calculationHandler)
         {
             this.performLookup = performLookup;
             this.viewModelAdapter = viewModelAdapter;
+            this.calculationHandler = calculationHandler;
         }
 
         public IEnumerable<Consignment> Return_AllActiveConsignments_ToViewModel()
@@ -62,6 +65,59 @@
 
                 result.Add(_newConsignment);
             }
+            return result;
+        }
+
+        public double Return_ConsignmentTotalValue_ToDouble(Consignment _consignment)
+        {
+            double result = 0;
+
+
+            return result;
+        }
+
+        public Dictionary<string, double> Return_ConsignmentTotals_ToDictionary(Consignment _consignment)
+        {
+            Dictionary<string, double> result = new Dictionary<string, double>();
+
+            string consigmentTotalValueKey = ConfigurationManager.AppSettings["ConsTotalValueKey"];
+            string consigmentTotalVATKey = ConfigurationManager.AppSettings["ConsTotalVATKey"];
+            string consigmentTotalDutyKey = ConfigurationManager.AppSettings["ConsTotalDutyKey"];
+
+            double VATRate1 = Convert.ToDouble(ConfigurationManager.AppSettings["VATRate1"]);
+            double VATRate2 = Convert.ToDouble(ConfigurationManager.AppSettings["VATRate2"]);
+            double VATRate3 = Convert.ToDouble(ConfigurationManager.AppSettings["VATRate3"]);
+            double VATRate4 = Convert.ToDouble(ConfigurationManager.AppSettings["VATRate4"]);
+
+            double _invoiceTotalValue = 0;
+            double _invoiceTotalVAT = 0;
+            double _invoiceTotalDuty = 0;
+
+            foreach (Invoice_Header _header in _consignment.Invoice_Headers)
+            {
+                foreach (Invoice_Detail _detail in _header.Invoice_Details)
+                {
+                    _invoiceTotalValue += _detail.Vat_A_Value;
+                    _invoiceTotalValue += _detail.Vat_B_Value;
+                    _invoiceTotalValue += _detail.Vat_C_Value;
+                    _invoiceTotalValue += _detail.Vat_D_Value;
+
+                    _invoiceTotalVAT += (_detail.Vat_A_Value * VATRate1);
+                    _invoiceTotalVAT += (_detail.Vat_B_Value * VATRate2);
+                    _invoiceTotalVAT += (_detail.Vat_C_Value * VATRate3);
+                    _invoiceTotalVAT += (_detail.Vat_D_Value * VATRate4);
+
+                    _invoiceTotalDuty += (_detail.Vat_A_Value * (_detail.Commodity_Duty_Pct / 100));
+                    _invoiceTotalDuty += (_detail.Vat_B_Value * (_detail.Commodity_Duty_Pct / 100));
+                    _invoiceTotalDuty += (_detail.Vat_C_Value * (_detail.Commodity_Duty_Pct / 100));
+                    _invoiceTotalDuty += (_detail.Vat_D_Value * (_detail.Commodity_Duty_Pct / 100));
+                }
+            }
+
+            result.Add(consigmentTotalValueKey, _invoiceTotalValue);
+            result.Add(consigmentTotalVATKey, _invoiceTotalVAT);
+            result.Add(consigmentTotalDutyKey, _invoiceTotalDuty);
+
             return result;
         }
     }
