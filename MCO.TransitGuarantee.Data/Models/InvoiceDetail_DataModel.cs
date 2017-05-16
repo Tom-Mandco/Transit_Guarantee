@@ -15,5 +15,7 @@ namespace MCO.TransitGuarantee.Data.Models
         public double Vat_D_Inv_Value { get; set; }
 
         public double Duty_Per_Cent_Pcent { get; set; }
+
+        public DateTime Confirmed_Date { get; set; }
     }
 }

@@ -6,9 +6,12 @@
     using System.Collections.Generic;
     using System.Configuration;
     using System.IO;
+    using System.Diagnostics;
 
     public class App : IApp
     {
+        private static Stopwatch stopwatch;
+
         private readonly ILog logger;
         private readonly IDataHandler dataHandler;
 
@@ -21,6 +24,10 @@
         public void Run()
         {
             logger.Info("Transit Guarantee Started");
+
+            stopwatch = new Stopwatch();
+
+            stopwatch.Start();
 
             IEnumerable<Consignment> consignmentData = dataHandler.Return_AllActiveConsignments_ToViewModel();
 
@@ -73,6 +80,9 @@
                 }
             }
 
+            stopwatch.Stop();
+
+            Console.WriteLine("Tid taget: {0}", stopwatch.Elapsed);
             Console.WriteLine("Dette program er færdig.");
             Console.ReadLine();
 

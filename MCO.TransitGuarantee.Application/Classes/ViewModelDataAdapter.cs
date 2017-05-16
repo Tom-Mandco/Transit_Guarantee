@@ -54,6 +54,8 @@
             DateTime dtCustomsBooked = dtConcatenator.Return_DateAndTimeStrings_ToDateTime(_consignment.Booked_In_Date, _consignment.Booked_In_Time);
             DateTime dtETAatPort = Convert.ToDateTime(_consignment.ETA_At_Port);
 
+            bool isActiveConsigment = Return_isConsignmentActive_ToBool(result_invoiceHeaders);
+
             Consignment result = new Consignment()
             {
                 Consignment_Number = _consignment.Consignment_Number,
@@ -62,8 +64,27 @@
                 Transport_Company = _consignment.Ship_Nameetruck_plat,
                 Customs_Booked = dtCustomsBooked,
                 ETA_At_Port = dtETAatPort,
+                Active_Consignment = isActiveConsigment,
                 Invoice_Headers = result_invoiceHeaders
             };
+
+            return result;
+        }
+
+        public bool Return_isConsignmentActive_ToBool(List<Invoice_Header> _invoiceHeaders)
+        {
+            bool result = false;
+
+            foreach (Invoice_Header _header in _invoiceHeaders)
+            {
+                foreach (Invoice_Detail _detail in _header.Invoice_Details)
+                {
+                    if(_detail.Date_of_WRC == null)
+                    {
+                        result = true;
+                    }
+                }
+            }
 
             return result;
         }
