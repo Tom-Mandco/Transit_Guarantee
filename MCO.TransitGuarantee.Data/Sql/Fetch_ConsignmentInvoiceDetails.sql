@@ -8,18 +8,21 @@
        invDetail.Vat_b_Inv_Value,
        invDetail.Vat_c_Inv_Value,
        invDetail.Vat_d_Inv_Value,
-       wrcHeader.Confirmed_Date
+       wrc.Confirmed_Date,
+       shpCons.Eta_At_Port
   From shp_consignments shpCons,
        shp_commodity_codes shpComms,
        shp_supplier_inv_hdr invHeader,
        shp_supplier_inv_dtl invDetail,
-       war_wrc_header wrcHeader,
-       war_wrc_detail wrcDetail
+      (Select Distinct wrcDetail.Order_No,
+              wrcHeader.Confirmed_Date
+       From   war_wrc_header wrcHeader,
+              war_wrc_detail wrcDetail
+       Where  wrcHeader.Wrc_Number = wrcDetail.Wrc_Number) wrc
 Where  shpCons.Consignment_Number = invHeader.Consignment_No
 And    shpCons.Consignment_Number = invDetail.Consignment_Number
 And    invDetail.Commodity_Code = shpComms.Commodity_Code (+)
-And    invDetail.Order_No = wrcDetail.Order_No (+)
-And    wrcDetail.Wrc_Number = wrcHeader.Wrc_Number (+)
+And    invDetail.Order_No = wrc.Order_No (+)
 And    invHeader.Supplier_Invoice_No = invDetail.Supplier_Invoice_No
 And    invHeader.Consignment_No = @0
 And    invHeader.Supplier_Invoice_No = @1

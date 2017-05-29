@@ -22,6 +22,8 @@
 
         public Invoice_Detail Map_InvoiceDetailDataModel_ToViewModel(InvoiceDetail_DataModel _invoiceDetail)
         {
+            bool _orderInTransit = calculationHandler.Return_IsOrderInTransit_ToBool(_invoiceDetail);
+
             Invoice_Detail result = new Invoice_Detail()
             {
                 Order_No = _invoiceDetail.Order_No,
@@ -31,7 +33,10 @@
                 Vat_C_Value = _invoiceDetail.Vat_C_Inv_Value,
                 Vat_D_Value = _invoiceDetail.Vat_D_Inv_Value,
                 Commodity_Code = _invoiceDetail.Commodity_Code,
-                Commodity_Duty_Pct = _invoiceDetail.Duty_Per_Cent_Pcent
+                Commodity_Duty_Pct = _invoiceDetail.Duty_Per_Cent_Pcent,
+                Date_of_WRC = _invoiceDetail.Confirmed_Date,
+                ETA_At_Port = _invoiceDetail.ETA_At_Port,
+                orderInTransit = _orderInTransit
             };
 
             return result;
@@ -54,7 +59,7 @@
             DateTime dtCustomsBooked = dtConcatenator.Return_DateAndTimeStrings_ToDateTime(_consignment.Booked_In_Date, _consignment.Booked_In_Time);
             DateTime dtETAatPort = Convert.ToDateTime(_consignment.ETA_At_Port);
 
-            bool isActiveConsigment = Return_isConsignmentActive_ToBool(result_invoiceHeaders);
+            int _deliveryStatus = Return_ConsignmentDeliveryStatus_ToInt(result_invoiceHeaders);
 
             Consignment result = new Consignment()
             {
@@ -64,26 +69,42 @@
                 Transport_Company = _consignment.Ship_Nameetruck_plat,
                 Customs_Booked = dtCustomsBooked,
                 ETA_At_Port = dtETAatPort,
-                Active_Consignment = isActiveConsigment,
+                Consignment_Delivery_Status = _deliveryStatus,
                 Invoice_Headers = result_invoiceHeaders
             };
 
             return result;
         }
 
-        public bool Return_isConsignmentActive_ToBool(List<Invoice_Header> _invoiceHeaders)
+        private int Return_ConsignmentDeliveryStatus_ToInt(List<Invoice_Header> result_invoiceHeaders)
         {
-            bool result = false;
+            int result = 0;
+            bool allDelivered = true;
+            bool activeDeliveries = false;
 
-            foreach (Invoice_Header _header in _invoiceHeaders)
+            foreach(Invoice_Header _header in result_invoiceHeaders)
             {
-                foreach (Invoice_Detail _detail in _header.Invoice_Details)
+                foreach(Invoice_Detail _detail in _header.Invoice_Details)
                 {
-                    if(_detail.Date_of_WRC == null)
+                    if(_detail.Date_of_WRC == new DateTime())
                     {
-                        result = true;
+                        allDelivered = false;
+                    }
+
+                    if (_detail.Date_of_Customs_Entry > new DateTime() || _detail.ETA_At_Port < DateTime.Now)
+                    {
+                        activeDeliveries = true;
                     }
                 }
+            }
+
+            if(allDelivered)
+            {
+                result = 2;
+            }
+            else if (activeDeliveries)
+            {
+                result = 1;
             }
 
             return result;

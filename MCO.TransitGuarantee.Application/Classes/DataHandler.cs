@@ -83,6 +83,7 @@
             string consigmentTotalValueKey = ConfigurationManager.AppSettings["ConsTotalValueKey"];
             string consigmentTotalVATKey = ConfigurationManager.AppSettings["ConsTotalVATKey"];
             string consigmentTotalDutyKey = ConfigurationManager.AppSettings["ConsTotalDutyKey"];
+            string consigmentTotalInTransitKey = ConfigurationManager.AppSettings["ConsTotalInTransitKey"];
 
             double VATRate1 = Convert.ToDouble(ConfigurationManager.AppSettings["VATRate1"]);
             double VATRate2 = Convert.ToDouble(ConfigurationManager.AppSettings["VATRate2"]);
@@ -92,31 +93,50 @@
             double _invoiceTotalValue = 0;
             double _invoiceTotalVAT = 0;
             double _invoiceTotalDuty = 0;
+            double _invoiceTotalInTransit = 0;
+
+            double detailTotalValue;
+            double detailTotalVAT;
+            double detailTotalDuty;
 
             foreach (Invoice_Header _header in _consignment.Invoice_Headers)
             {
                 foreach (Invoice_Detail _detail in _header.Invoice_Details)
                 {
-                    _invoiceTotalValue += _detail.Vat_A_Value;
-                    _invoiceTotalValue += _detail.Vat_B_Value;
-                    _invoiceTotalValue += _detail.Vat_C_Value;
-                    _invoiceTotalValue += _detail.Vat_D_Value;
+                    detailTotalValue = 0;
+                    detailTotalVAT = 0;
+                    detailTotalDuty = 0;
 
-                    _invoiceTotalVAT += (_detail.Vat_A_Value * VATRate1);
-                    _invoiceTotalVAT += (_detail.Vat_B_Value * VATRate2);
-                    _invoiceTotalVAT += (_detail.Vat_C_Value * VATRate3);
-                    _invoiceTotalVAT += (_detail.Vat_D_Value * VATRate4);
+                    detailTotalValue += _detail.Vat_A_Value;
+                    detailTotalValue += _detail.Vat_B_Value;
+                    detailTotalValue += _detail.Vat_C_Value;
+                    detailTotalValue += _detail.Vat_D_Value;
 
-                    _invoiceTotalDuty += (_detail.Vat_A_Value * (_detail.Commodity_Duty_Pct / 100));
-                    _invoiceTotalDuty += (_detail.Vat_B_Value * (_detail.Commodity_Duty_Pct / 100));
-                    _invoiceTotalDuty += (_detail.Vat_C_Value * (_detail.Commodity_Duty_Pct / 100));
-                    _invoiceTotalDuty += (_detail.Vat_D_Value * (_detail.Commodity_Duty_Pct / 100));
+                    detailTotalVAT += (_detail.Vat_A_Value * VATRate1);
+                    detailTotalVAT += (_detail.Vat_B_Value * VATRate2);
+                    detailTotalVAT += (_detail.Vat_C_Value * VATRate3);
+                    detailTotalVAT += (_detail.Vat_D_Value * VATRate4);
+
+                    detailTotalDuty += (_detail.Vat_A_Value * (_detail.Commodity_Duty_Pct / 100));
+                    detailTotalDuty += (_detail.Vat_B_Value * (_detail.Commodity_Duty_Pct / 100));
+                    detailTotalDuty += (_detail.Vat_C_Value * (_detail.Commodity_Duty_Pct / 100));
+                    detailTotalDuty += (_detail.Vat_D_Value * (_detail.Commodity_Duty_Pct / 100));
+
+                    _invoiceTotalValue += detailTotalValue;
+                    _invoiceTotalVAT += detailTotalVAT;
+                    _invoiceTotalDuty += detailTotalDuty;
+
+                    if (_detail.orderInTransit)
+                    {
+                        _invoiceTotalInTransit += (detailTotalDuty + detailTotalVAT);
+                    }
                 }
             }
 
             result.Add(consigmentTotalValueKey, _invoiceTotalValue);
             result.Add(consigmentTotalVATKey, _invoiceTotalVAT);
             result.Add(consigmentTotalDutyKey, _invoiceTotalDuty);
+            result.Add(consigmentTotalInTransitKey, _invoiceTotalInTransit);
 
             return result;
         }

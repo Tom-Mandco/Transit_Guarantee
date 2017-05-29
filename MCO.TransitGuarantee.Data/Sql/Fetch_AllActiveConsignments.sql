@@ -8,3 +8,4 @@
   From mackays.shp_consignments s
 Where  s.last_update_usr_id = 'tsmith'
 And    s.inland_depot in (@0)
+Order by consignment_number asc
