@@ -1,13 +1,13 @@
 ﻿namespace MCO.TransitGuarantee.Application.Classes
 {
-    using Interfaces;
-    using Domain.Interfaces;
-    using Models;
     using Data.Models;
+    using Domain.Interfaces;
+    using Interfaces;
+    using Models;
     using Service.Interfaces;
     using System;
-    using System.Configuration;
     using System.Collections.Generic;
+    using System.Configuration;
 
     public class DataHandler : IDataHandler
     {
@@ -38,7 +38,7 @@
 
                 List<Invoice_Header> result_invoiceHeaders = new List<Invoice_Header>();
 
-                
+
                 if (_invoiceHdrDataModel != null)
                 {
                     foreach (InvoiceHeader_DataModel _invoiceHeader in _invoiceHdrDataModel)
@@ -65,14 +65,6 @@
 
                 result.Add(_newConsignment);
             }
-            return result;
-        }
-
-        public double Return_ConsignmentTotalValue_ToDouble(Consignment _consignment)
-        {
-            double result = 0;
-
-
             return result;
         }
 

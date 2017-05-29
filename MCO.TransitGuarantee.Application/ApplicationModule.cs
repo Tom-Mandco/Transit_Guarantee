@@ -35,6 +35,7 @@
             });
 
             Bind(typeof(IApp)).To(typeof(App));
+            Bind(typeof(IFileWriter)).To(typeof(FileWriter));
             Bind(typeof(IDataHandler)).To(typeof(DataHandler));
             Bind(typeof(IPerformLookup)).To(typeof(PerformLookup));
             Bind(typeof(ICalculationHandler)).To(typeof(CalculationHandler));
