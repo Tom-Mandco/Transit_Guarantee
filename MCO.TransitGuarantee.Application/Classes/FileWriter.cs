@@ -6,17 +6,23 @@
     using System.Configuration;
     using System;
     using System.IO;
+    using System.Data;
+    using ClosedXML.Excel;
 
     public class FileWriter : IFileWriter
     {
         private readonly IDataHandler dataHandler;
+        private readonly IDataTableFactory dtFactory;
         private static string outputLocation;
 
-        public FileWriter(IDataHandler dataHandler)
+        public FileWriter(IDataHandler dataHandler, IDataTableFactory dtFactory)
         {
             this.dataHandler = dataHandler;
+            this.dtFactory = dtFactory;
 
             outputLocation = ConfigurationManager.AppSettings["OutputFileLocation"];
+
+            EnsureDirectoryExists(outputLocation);
         }
 
         public void Write_AllData_ToFile(IEnumerable<Consignment> consignmentData)
@@ -27,6 +33,7 @@
             string consigmentTotalInTransitKey = ConfigurationManager.AppSettings["ConsTotalInTransitKey"];
 
             double transitGuaranteeRemaining = 0;
+            double fullConsignmentValue = 0;
 
             double.TryParse(ConfigurationManager.AppSettings["TransitGuaranteeValue"], out transitGuaranteeRemaining);
 
@@ -38,6 +45,7 @@
                 Dictionary<string, double> _ConsignmentTotals = dataHandler.Return_ConsignmentTotals_ToDictionary(_consignment);
 
                 transitGuaranteeRemaining -= _ConsignmentTotals[consigmentTotalInTransitKey];
+                fullConsignmentValue = _ConsignmentTotals[consigmentTotalVATKey] + _ConsignmentTotals[consigmentTotalDutyKey];
 
                 output_Breakdown.Add(string.Format("Consignment: {0} | Carrier Code: {1} | Total Value: {2} | Duty: {3} | VAT: {4} | Active Consignment Value: {5}",
                                    _consignment.Consignment_Number,
@@ -71,14 +79,15 @@
                 }
 
 
-                output_Concise.Add(string.Format("[Status: {6}] [Active Transit Value: {0}] Consignment No: {1} | Total Value: {2} | Duty : {3} | VAT: {4} | Transit Guarantee Remaining: {5}",
+                output_Concise.Add(string.Format("[Status: {6}] [Active Transit Value: {0} / {7}] Consignment No: {1} | Total Value: {2} | Duty : {3} | VAT: {4} | Transit Guarantee Remaining: {5}",
                                     _ConsignmentTotals[consigmentTotalInTransitKey],
                                     _consignment.Consignment_Number,
                                     _ConsignmentTotals[consigmentTotalValueKey],
                                     _ConsignmentTotals[consigmentTotalVATKey],
                                     _ConsignmentTotals[consigmentTotalDutyKey],
                                     transitGuaranteeRemaining,
-                                    _consignment.Return_DeliveryStatus_ToString()));
+                                    _consignment.Return_DeliveryStatus_ToString(),
+                                    fullConsignmentValue));
             }
 
             using (StreamWriter writer = new StreamWriter(outputLocation + @"TransitGuaranteeOutput_Breakdown.txt"))
@@ -99,6 +108,32 @@
                 }
                 writer.Close();
                 writer.Dispose();
+            }
+        }
+
+        public void Write_AllData_ToCsv(IEnumerable<Consignment> consignmentData)
+        {
+            XLWorkbook newWorkbook = new XLWorkbook();
+            DataTable dtConsignmentData = dtFactory.Return_ConsignmentData_ToDataTable(consignmentData);
+
+            string workbookName = string.Format("{0}",
+                                                DateTime.Now.ToString("dd-MMM-yyyy"));
+
+            string workbookFilePath = string.Format("{0}TransitGuarantee_{1}.{2}",
+                                                    outputLocation,
+                                                    DateTime.Now.ToString("yyyyMMdd"),
+                                                    ConfigurationManager.AppSettings["ExcelOutputFileExtension"]);
+
+            newWorkbook.Worksheets.Add(dtConsignmentData, workbookName);
+
+            newWorkbook.SaveAs(workbookFilePath);
+        }
+
+        private void EnsureDirectoryExists(string directoryPath)
+        {
+            if(!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
             }
         }
     }

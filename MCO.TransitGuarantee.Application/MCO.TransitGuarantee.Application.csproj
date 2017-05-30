@@ -53,6 +53,14 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ClosedXML, Version=0.87.0.0, Culture=neutral, PublicKeyToken=fd1eb21b62ae805b, processorArchitecture=MSIL">
+      <HintPath>..\packages\ClosedXML.0.87.1\lib\net40\ClosedXML.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.5.5631.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.2.5\lib\DocumentFormat.OpenXml.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
       <Private>True</Private>
@@ -75,10 +83,12 @@
     <Compile Include="ApplicationModule.cs" />
     <Compile Include="Classes\App.cs" />
     <Compile Include="Classes\DataHandler.cs" />
+    <Compile Include="Classes\DataTableFactory.cs" />
     <Compile Include="Classes\FileWriter.cs" />
     <Compile Include="Classes\Log.cs" />
     <Compile Include="Classes\ViewModelDataAdapter.cs" />
     <Compile Include="CompositionRoot.cs" />
+    <Compile Include="Interfaces\IDataTableFactory.cs" />
     <Compile Include="Interfaces\IApp.cs" />
     <Compile Include="Interfaces\IDataHandler.cs" />
     <Compile Include="Interfaces\IFileWriter.cs" />

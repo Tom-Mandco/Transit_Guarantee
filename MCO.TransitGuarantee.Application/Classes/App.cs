@@ -15,13 +15,13 @@
         private static Stopwatch sectionTimeElapsed;
 
         private readonly ILog logger;
-        private readonly IFileWriter dataWriter;
+        private readonly IFileWriter fileWriter;
         private readonly IDataHandler dataHandler;
 
         public App(ILog logger, IFileWriter dataWriter, IDataHandler dataHandler)
         {
             this.logger = logger;
-            this.dataWriter = dataWriter;
+            this.fileWriter = dataWriter;
             this.dataHandler = dataHandler;
         }
 
@@ -40,16 +40,20 @@
             consignmentData = consignmentData.OrderBy(x => x.Consignment_Delivery_Status);
 
             sectionTimeElapsed.Stop();
-            Console.WriteLine("Område tid: {0} | dataHandelr ", sectionTimeElapsed.Elapsed);
+            Console.WriteLine("Område tid: {0} | dataHandler ", sectionTimeElapsed.Elapsed);
             sectionTimeElapsed.Reset();
 
 
             sectionTimeElapsed.Start();
-            
-            dataWriter.Write_AllData_ToFile(consignmentData);
-
+            fileWriter.Write_AllData_ToFile(consignmentData);
             sectionTimeElapsed.Stop();
-            Console.WriteLine("Område tid: {0} | dataWriter (File)", sectionTimeElapsed.Elapsed);
+            Console.WriteLine("Område tid: {0} | fileWriter (txt)", sectionTimeElapsed.Elapsed);
+            sectionTimeElapsed.Reset();
+
+            sectionTimeElapsed.Start();
+            fileWriter.Write_AllData_ToCsv(consignmentData);
+            sectionTimeElapsed.Stop();
+            Console.WriteLine("Område tid: {0} | fileWriter (csv)", sectionTimeElapsed.Elapsed);
             sectionTimeElapsed.Reset();
 
             totalTimeElapsed.Stop();
