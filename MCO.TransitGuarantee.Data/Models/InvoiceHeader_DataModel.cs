@@ -8,6 +8,8 @@
         public string Invoice_Currency { get; set; }
         public string Supplier_Invoice_No { get; set; }
 
+        public decimal Exchange_Rate { get; set; }
+
         public IEnumerable<InvoiceDetail_DataModel> Invoice_Details { get; set; }
     }
 }

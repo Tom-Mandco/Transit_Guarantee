@@ -8,21 +8,29 @@
     using System.IO;
     using System.Data;
     using ClosedXML.Excel;
+    using ClosedXML;
+    using Newtonsoft.Json;
+    using System.Globalization;
 
     public class FileWriter : IFileWriter
     {
         private readonly IDataHandler dataHandler;
         private readonly IDataTableFactory dtFactory;
-        private static string outputLocation;
+        private static string outputDirectory;
+        private static string outputFileName;
 
         public FileWriter(IDataHandler dataHandler, IDataTableFactory dtFactory)
         {
             this.dataHandler = dataHandler;
             this.dtFactory = dtFactory;
 
-            outputLocation = ConfigurationManager.AppSettings["OutputFileLocation"];
+            outputDirectory = ConfigurationManager.AppSettings["OutputFileLocation"];
 
-            EnsureDirectoryExists(outputLocation);
+            outputFileName = string.Format("TransitGuarantee_{1}",
+                                        outputDirectory,
+                                        DateTime.Now.ToString("yyyyMMdd"));
+
+            EnsureDirectoryExists(outputDirectory);
         }
 
         public void Write_AllData_ToFile(IEnumerable<Consignment> consignmentData)
@@ -32,17 +40,17 @@
             string consigmentTotalDutyKey = ConfigurationManager.AppSettings["ConsTotalDutyKey"];
             string consigmentTotalInTransitKey = ConfigurationManager.AppSettings["ConsTotalInTransitKey"];
 
-            double transitGuaranteeRemaining = 0;
-            double fullConsignmentValue = 0;
+            decimal transitGuaranteeRemaining = 0;
+            decimal fullConsignmentValue = 0;
 
-            double.TryParse(ConfigurationManager.AppSettings["TransitGuaranteeValue"], out transitGuaranteeRemaining);
+            decimal.TryParse(ConfigurationManager.AppSettings["TransitGuaranteeValue"], out transitGuaranteeRemaining);
 
             List<string> output_Breakdown = new List<string>();
             List<string> output_Concise = new List<string>();
 
             foreach (Consignment _consignment in consignmentData)
             {
-                Dictionary<string, double> _ConsignmentTotals = dataHandler.Return_ConsignmentTotals_ToDictionary(_consignment);
+                Dictionary<string, decimal> _ConsignmentTotals = dataHandler.Return_ConsignmentTotals_ToDictionary(_consignment);
 
                 transitGuaranteeRemaining -= _ConsignmentTotals[consigmentTotalInTransitKey];
                 fullConsignmentValue = _ConsignmentTotals[consigmentTotalVATKey] + _ConsignmentTotals[consigmentTotalDutyKey];
@@ -50,10 +58,10 @@
                 output_Breakdown.Add(string.Format("Consignment: {0} | Carrier Code: {1} | Total Value: {2} | Duty: {3} | VAT: {4} | Active Consignment Value: {5}",
                                    _consignment.Consignment_Number,
                                    _consignment.Carrier_Code,
-                                   _ConsignmentTotals[consigmentTotalValueKey],
-                                   _ConsignmentTotals[consigmentTotalVATKey],
-                                   _ConsignmentTotals[consigmentTotalDutyKey],
-                                   _ConsignmentTotals[consigmentTotalInTransitKey]
+                                   _ConsignmentTotals[consigmentTotalValueKey].ToString("C2", CultureInfo.GetCultureInfo("en-GB")),
+                                   _ConsignmentTotals[consigmentTotalVATKey].ToString("C2", CultureInfo.GetCultureInfo("en-GB")),
+                                   _ConsignmentTotals[consigmentTotalDutyKey].ToString("C2", CultureInfo.GetCultureInfo("en-GB")),
+                                   _ConsignmentTotals[consigmentTotalInTransitKey].ToString("C2", CultureInfo.GetCultureInfo("en-GB"))
                                    ));
 
                 foreach (Invoice_Header _header in _consignment.Invoice_Headers)
@@ -68,12 +76,12 @@
                         output_Breakdown.Add(string.Format(" - - Order No: {0} | Lot No: {1} | Commodity Code: {6} | Duty Pct: {7} | VAT Invoice Values: {2} / {3} / {4} / {5}",
                                            _detail.Order_No,
                                            _detail.Lot_No,
-                                           _detail.Vat_A_Value,
-                                           _detail.Vat_B_Value,
-                                           _detail.Vat_C_Value,
-                                           _detail.Vat_D_Value,
+                                           _detail.Vat_A_Value.ToString("C2", CultureInfo.GetCultureInfo("en-GB")),
+                                           _detail.Vat_B_Value.ToString("C2", CultureInfo.GetCultureInfo("en-GB")),
+                                           _detail.Vat_C_Value.ToString("C2", CultureInfo.GetCultureInfo("en-GB")),
+                                           _detail.Vat_D_Value.ToString("C2", CultureInfo.GetCultureInfo("en-GB")),
                                            _detail.Commodity_Code,
-                                           _detail.Commodity_Duty_Pct
+                                           _detail.Commodity_Duty_Pct.ToString("N1")
                                            ));
                     }
                 }
@@ -90,7 +98,7 @@
                                     fullConsignmentValue));
             }
 
-            using (StreamWriter writer = new StreamWriter(outputLocation + @"TransitGuaranteeOutput_Breakdown.txt"))
+            using (StreamWriter writer = new StreamWriter(outputDirectory + outputFileName + "_Breakdown.txt"))
             {
                 foreach (string line in output_Breakdown)
                 {
@@ -100,7 +108,7 @@
                 writer.Dispose();
             }
 
-            using (StreamWriter writer = new StreamWriter(outputLocation + @"TransitGuaranteeOutput_Concise.txt"))
+            using (StreamWriter writer = new StreamWriter(outputDirectory + outputFileName + ".txt"))
             {
                 foreach (string line in output_Concise)
                 {
@@ -117,16 +125,38 @@
             DataTable dtConsignmentData = dtFactory.Return_ConsignmentData_ToDataTable(consignmentData);
 
             string workbookName = string.Format("{0}",
-                                                DateTime.Now.ToString("dd-MMM-yyyy"));
+                        DateTime.Now.ToString("dd-MMM-yyyy"));
 
-            string workbookFilePath = string.Format("{0}TransitGuarantee_{1}.{2}",
-                                                    outputLocation,
-                                                    DateTime.Now.ToString("yyyyMMdd"),
+            string workbookFilePath = string.Format("{0}{1}.{2}",
+                                                    outputDirectory,
+                                                    outputFileName,
                                                     ConfigurationManager.AppSettings["ExcelOutputFileExtension"]);
 
-            newWorkbook.Worksheets.Add(dtConsignmentData, workbookName);
+            var workSheet = newWorkbook.Worksheets.Add(dtConsignmentData, workbookName);
+
+            workSheet.Cells("A2:A999").DataType = XLCellValues.Number;
+            workSheet.Cells("C2:H999").DataType = XLCellValues.Number;
+            workSheet.Cells("C2:H999").Style.NumberFormat.Format = "£ #,##0.00";
+
+            workSheet.Columns().AdjustToContents();
 
             newWorkbook.SaveAs(workbookFilePath);
+        }
+
+        public void Write_AllData_ToJson(IEnumerable<Consignment> consignmentData)
+        {
+            var _jsonSerializerSettings = new JsonSerializerSettings()
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            };
+
+            string fullFilePath = string.Format("{0}{1}.Json",
+                                                outputDirectory,
+                                                outputFileName);
+
+            string json = JsonConvert.SerializeObject(consignmentData, Formatting.Indented, _jsonSerializerSettings);
+
+            File.WriteAllText(fullFilePath, json);
         }
 
         private void EnsureDirectoryExists(string directoryPath)

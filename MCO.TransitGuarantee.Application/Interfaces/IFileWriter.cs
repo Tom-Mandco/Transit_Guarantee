@@ -7,5 +7,6 @@ namespace MCO.TransitGuarantee.Application.Interfaces
     {
         void Write_AllData_ToFile(IEnumerable<Consignment> consignmentData);
         void Write_AllData_ToCsv(IEnumerable<Consignment> consignmentData);
+        void Write_AllData_ToJson(IEnumerable<Consignment> consignmentData);
     }
 }

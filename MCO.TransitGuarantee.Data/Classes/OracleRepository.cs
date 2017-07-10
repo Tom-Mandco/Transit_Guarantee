@@ -14,6 +14,16 @@
         {
         }
 
+        public bool Check_ExchangeRatesAreCurrent()
+        {
+            using (new SharedConnection(dbConnection))
+            {
+                var result = dbConnection.Query<ExchangeRate>(SqlLoader.GetSql("Check_ExchangeRatesAreCurrent"));
+
+                return result.Any() ? false : true;
+            }
+        }
+
         public IEnumerable<Consignment_DataModel> Fetch_AllActiveConsignments(string inlandDepotList)
         {
             using (new SharedConnection(dbConnection))

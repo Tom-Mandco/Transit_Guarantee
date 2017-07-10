@@ -7,6 +7,5 @@
        Inland_Depot
   From mackays.shp_consignments s
 Where  s.inland_depot in (@0)
-And    s.creation_date > sysdate - 60
---And	   s.last_update_usr_id = 'tsmith'
+And    s.creation_date > sysdate - 30
 Order by consignment_number asc

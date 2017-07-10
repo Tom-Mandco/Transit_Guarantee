@@ -23,11 +23,11 @@
 
             switch(Consignment_Delivery_Status)
             {
-                case 0: result = "Forecast";
+                case 0: result = "Delivered";
                    break;
                 case 1: result = "Active";
                     break;
-                case 2: result = "Delivered";
+                case 2: result = "Forecast";
                     break;
             }
 

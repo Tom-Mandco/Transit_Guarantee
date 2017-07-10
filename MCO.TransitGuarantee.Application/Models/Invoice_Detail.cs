@@ -8,14 +8,17 @@
         public int Lot_No { get; set; }
 
         public string Commodity_Code { get; set; }
+        public string Country_Code { get; set; }
+        public string Country_Name { get; set; }
         public string Customs_Entry_No { get; set; }
 
-        public double Vat_A_Value { get; set; }
-        public double Vat_B_Value { get; set; }
-        public double Vat_C_Value { get; set; }
-        public double Vat_D_Value { get; set; }
+        public decimal Vat_A_Value { get; set; }
+        public decimal Vat_B_Value { get; set; }
+        public decimal Vat_C_Value { get; set; }
+        public decimal Vat_D_Value { get; set; }
 
-        public double Commodity_Duty_Pct { get; set; }
+        public decimal Commodity_Duty_Pct { get; set; }
+        public decimal Supplier_Discount_Pct { get; set; }
 
         public bool orderInTransit { get; set; }
 
@@ -24,4 +27,3 @@
         public DateTime Date_of_Customs_Entry { get; set; }
     }
 }
-

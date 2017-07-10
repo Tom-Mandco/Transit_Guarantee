@@ -33,7 +33,10 @@
                 Vat_C_Value = _invoiceDetail.Vat_C_Inv_Value,
                 Vat_D_Value = _invoiceDetail.Vat_D_Inv_Value,
                 Commodity_Code = _invoiceDetail.Commodity_Code,
+                Country_Name = _invoiceDetail.Country_Name,
+                Country_Code = _invoiceDetail.Country_Code,
                 Commodity_Duty_Pct = _invoiceDetail.Duty_Per_Cent_Pcent,
+                Supplier_Discount_Pct = _invoiceDetail.Discount_Pcent,
                 Date_of_WRC = _invoiceDetail.Confirmed_Date,
                 ETA_At_Port = _invoiceDetail.ETA_At_Port,
                 orderInTransit = _orderInTransit
@@ -48,7 +51,8 @@
             {
                 Supplier_Invoice_Number = _invoiceHeader.Supplier_Invoice_No,
                 Invoice_Currency = _invoiceHeader.Invoice_Currency,
-                Invoice_Details = result_invoiceDetails
+                Invoice_Details = result_invoiceDetails,
+                Exchange_Rate = _invoiceHeader.Exchange_Rate
             };
 
             return result;

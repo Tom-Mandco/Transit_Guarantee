@@ -6,6 +6,7 @@
     public interface IDataHandler
     {
         IEnumerable<Consignment> Return_AllActiveConsignments_ToViewModel();
-        Dictionary<string, double> Return_ConsignmentTotals_ToDictionary(Consignment _consignment);
+        Dictionary<string, decimal> Return_ConsignmentTotals_ToDictionary(Consignment _consignment);
+        bool Return_AreExchangeRatesUpToDate_ToBool();
     }
 }

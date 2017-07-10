@@ -30,5 +30,9 @@
             return repository.Fetch_ConsignmentInvoiceDetails(consignment_Number, supplier_Invoice_Number);
         }
 
+        public bool Return_AreExchangeRatesUpToDate_ToBool()
+        {
+            return repository.Check_ExchangeRatesAreCurrent();
+        }
     }
 }
