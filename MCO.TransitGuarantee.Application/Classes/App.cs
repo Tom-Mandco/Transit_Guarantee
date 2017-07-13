@@ -29,73 +29,81 @@
 
         public void Run()
         {
-            totalTimeElapsed = new Stopwatch();
-            sectionTimeElapsed = new Stopwatch();
+            try
+            {
+                totalTimeElapsed = new Stopwatch();
+                sectionTimeElapsed = new Stopwatch();
 
-            logger.Info("Transit Guarantee Started");
-            Console.WriteLine("Programmet startede");
+                logger.Info("Transit Guarantee Started");
+                Console.WriteLine("Programmet startede");
 
-            totalTimeElapsed.Start();
+                totalTimeElapsed.Start();
 
-            #region Run Exchange rate handler
-            sectionTimeElapsed.Start();
+                #region Run Exchange rate handler
+                sectionTimeElapsed.Start();
 
-            exchangeRateHandler.EnsureExchangeRatesAreCurrent();
+                exchangeRateHandler.EnsureExchangeRatesAreCurrent();
 
-            sectionTimeElapsed.Stop();
-            Console.WriteLine("Område tid: {0} | exchangeRates ", sectionTimeElapsed.Elapsed);
-            logger.Info("Område tid: {0} | exchangeRates ", sectionTimeElapsed.Elapsed);
-            sectionTimeElapsed.Reset();
-            #endregion
+                sectionTimeElapsed.Stop();
+                Console.WriteLine("Område tid: {0} | exchangeRates ", sectionTimeElapsed.Elapsed);
+                logger.Info("Område tid: {0} | exchangeRates ", sectionTimeElapsed.Elapsed);
+                sectionTimeElapsed.Reset();
+                #endregion
 
-            #region Return Consignment Data
-            sectionTimeElapsed.Start();
+                #region Return Consignment Data
+                sectionTimeElapsed.Start();
 
-            IEnumerable<Consignment> consignmentData = dataHandler.Return_AllActiveConsignments_ToViewModel();
-            consignmentData = consignmentData.OrderBy(x => x.Consignment_Delivery_Status);
+                IEnumerable<Consignment> consignmentData = dataHandler.Return_AllActiveConsignments_ToViewModel();
+                consignmentData = consignmentData.OrderBy(x => x.Consignment_Delivery_Status);
 
-            sectionTimeElapsed.Stop();
-            Console.WriteLine("Område tid: {0} | dataHandler ", sectionTimeElapsed.Elapsed);
-            logger.Info("Område tid: {0} | dataHandler ", sectionTimeElapsed.Elapsed);
-            sectionTimeElapsed.Reset();
-            #endregion
+                sectionTimeElapsed.Stop();
+                Console.WriteLine("Område tid: {0} | dataHandler ", sectionTimeElapsed.Elapsed);
+                logger.Info("Område tid: {0} | dataHandler ", sectionTimeElapsed.Elapsed);
+                sectionTimeElapsed.Reset();
+                #endregion
 
-            #region Write to File
-            sectionTimeElapsed.Start();
-            fileWriter.Write_AllData_ToFile(consignmentData);
-            sectionTimeElapsed.Stop();
-            Console.WriteLine("Område tid: {0} | fileWriter (txt)", sectionTimeElapsed.Elapsed);
-            logger.Info("Område tid: {0} | fileWriter (txt)", sectionTimeElapsed.Elapsed);
-            sectionTimeElapsed.Reset();
-            #endregion
+                #region Write to File
+                sectionTimeElapsed.Start();
+                fileWriter.Write_AllData_ToFile(consignmentData);
+                sectionTimeElapsed.Stop();
+                Console.WriteLine("Område tid: {0} | fileWriter (txt)", sectionTimeElapsed.Elapsed);
+                logger.Info("Område tid: {0} | fileWriter (txt)", sectionTimeElapsed.Elapsed);
+                sectionTimeElapsed.Reset();
+                #endregion
 
-            #region Write to CSV
-            sectionTimeElapsed.Start();
-            fileWriter.Write_AllData_ToCsv(consignmentData);
-            sectionTimeElapsed.Stop();
-            Console.WriteLine("Område tid: {0} | fileWriter (csv)", sectionTimeElapsed.Elapsed);
-            logger.Info("Område tid: {0} | fileWriter (csv)", sectionTimeElapsed.Elapsed);
-            sectionTimeElapsed.Reset();
-            #endregion
+                #region Write to CSV
+                sectionTimeElapsed.Start();
+                fileWriter.Write_AllData_ToCsv(consignmentData);
+                sectionTimeElapsed.Stop();
+                Console.WriteLine("Område tid: {0} | fileWriter (csv)", sectionTimeElapsed.Elapsed);
+                logger.Info("Område tid: {0} | fileWriter (csv)", sectionTimeElapsed.Elapsed);
+                sectionTimeElapsed.Reset();
+                #endregion
 
-            #region Write to Json
-            sectionTimeElapsed.Start();
-            fileWriter.Write_AllData_ToJson(consignmentData);
-            sectionTimeElapsed.Stop();
-            Console.WriteLine("Område tid: {0} | fileWriter (jsn)", sectionTimeElapsed.Elapsed);
-            logger.Info("Område tid: {0} | fileWriter (jsn)", sectionTimeElapsed.Elapsed);
-            sectionTimeElapsed.Reset();
-            #endregion
+                #region Write to Json
+                sectionTimeElapsed.Start();
+                fileWriter.Write_AllData_ToJson(consignmentData);
+                sectionTimeElapsed.Stop();
+                Console.WriteLine("Område tid: {0} | fileWriter (jsn)", sectionTimeElapsed.Elapsed);
+                logger.Info("Område tid: {0} | fileWriter (jsn)", sectionTimeElapsed.Elapsed);
+                sectionTimeElapsed.Reset();
+                #endregion
 
-            totalTimeElapsed.Stop();
+                totalTimeElapsed.Stop();
 
-            Console.WriteLine("Tid taget:  {0}", totalTimeElapsed.Elapsed);
-            logger.Info("Tid taget:  {0}", totalTimeElapsed.Elapsed);
-            Console.WriteLine("Dette program er færdig.");
-            logger.Info("Dette program er færdig.");
-            Console.ReadLine();
+                Console.WriteLine("Tid taget:  {0}", totalTimeElapsed.Elapsed);
+                logger.Info("Tid taget:  {0}", totalTimeElapsed.Elapsed);
+                Console.WriteLine("Dette program er færdig.");
+                logger.Info("Dette program er færdig.");
+                Console.ReadLine();
 
-            logger.Info("Transit Guarantee Ended");
+                logger.Info("Transit Guarantee Ended");
+            }
+            catch(Exception ex)
+            {
+                logger.Error(ex.Message);
+                logger.Error(ex.StackTrace);
+            }
         }
     }
 }
