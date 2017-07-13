@@ -11,13 +11,11 @@
     {
         private readonly ILog logger;
         private readonly ICalculationHandler calculationHandler;
-        private readonly IDateTimeConcatenator dtConcatenator;
 
-        public ViewModelDataAdapter(ILog logger, ICalculationHandler calculationHandler, IDateTimeConcatenator dtConcatenator)
+        public ViewModelDataAdapter(ILog logger, ICalculationHandler calculationHandler)
         {
             this.logger = logger;
             this.calculationHandler = calculationHandler;
-            this.dtConcatenator = dtConcatenator;
         }
 
         public Invoice_Detail Map_InvoiceDetailDataModel_ToViewModel(InvoiceDetail_DataModel _invoiceDetail)
@@ -60,7 +58,7 @@
 
         public Consignment Map_ConsignmentDataModel_ToViewModel(Consignment_DataModel _consignment, List<Invoice_Header> result_invoiceHeaders)
         {
-            DateTime dtCustomsBooked = dtConcatenator.Return_DateAndTimeStrings_ToDateTime(_consignment.Booked_In_Date, _consignment.Booked_In_Time);
+            DateTime dtCustomsBooked = Convert.ToDateTime(_consignment.Booked_In_Date);
             DateTime dtETAatPort = Convert.ToDateTime(_consignment.ETA_At_Port);
 
             int _deliveryStatus = Return_ConsignmentDeliveryStatus_ToInt(result_invoiceHeaders);

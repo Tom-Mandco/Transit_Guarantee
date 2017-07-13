@@ -2,18 +2,21 @@
 {
     using Interfaces;
     using Models;
+    using Service.Interfaces;
     using System.Data;
     using System;
     using System.Collections.Generic;
     using System.Configuration;
 
-    class DataTableFactory : IDataTableFactory
+    class DataTableMapper : IDataTableMapper
     {
         private readonly IDataHandler dataHandler;
+        private readonly IDataTableFactory dataTableFactory;
 
-        public DataTableFactory(IDataHandler dataHandler)
+        public DataTableMapper(IDataHandler dataHandler, IDataTableFactory dataTableFactory)
         {
             this.dataHandler = dataHandler;
+            this.dataTableFactory = dataTableFactory;
         }
 
         public DataTable Return_ConsignmentData_ToDataTable(IEnumerable<Consignment> consignmentData)
@@ -28,10 +31,10 @@
 
             decimal.TryParse(ConfigurationManager.AppSettings["TransitGuaranteeValue"], out transitGuaranteeRemaining);
 
-            DataTable result = Return_EmptyConsignmentDTWithHeaders_ToDataTable();
-
             List<string> output_Breakdown = new List<string>();
             List<string> output_Concise = new List<string>();
+
+            DataTable result = dataTableFactory.Return_EmptyConsignmentDTWithHeaders_ToDataTable();
 
             foreach (Consignment _consignment in consignmentData)
             {
@@ -50,22 +53,6 @@
                                 Math.Round(transitGuaranteeRemaining, 2)
                                 );
             }
-
-            return result;
-        }
-
-        private DataTable Return_EmptyConsignmentDTWithHeaders_ToDataTable()
-        {
-            DataTable result = new DataTable();
-
-            result.Columns.Add("Consignment Number");
-            result.Columns.Add("Consignment Status");
-            result.Columns.Add("Duty Value");
-            result.Columns.Add("VAT Value");
-            result.Columns.Add("Total Value");
-            result.Columns.Add("Total Transit Value");
-            result.Columns.Add("Active Transit Value");
-            result.Columns.Add("Transit Guarantee Remaining");
 
             return result;
         }

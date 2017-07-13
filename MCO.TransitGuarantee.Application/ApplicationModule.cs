@@ -38,10 +38,10 @@
             Bind(typeof(IFileWriter)).To(typeof(FileWriter));
             Bind(typeof(IDataHandler)).To(typeof(DataHandler));
             Bind(typeof(IPerformLookup)).To(typeof(PerformLookup));
+            Bind(typeof(IDataTableMapper)).To(typeof(DataTableMapper));
             Bind(typeof(IDataTableFactory)).To(typeof(DataTableFactory));
             Bind(typeof(ICalculationHandler)).To(typeof(CalculationHandler));
             Bind(typeof(IExchangeRateHandler)).To(typeof(ExchangeRateHandler));
-            Bind(typeof(IDateTimeConcatenator)).To(typeof(DateTimeConcatenator));
             Bind(typeof(IViewModelDataAdapter)).To(typeof(ViewModelDataAdapter));
             Bind(typeof(IRepository)).To(typeof(OracleRepository)).InSingletonScope().WithConstructorArgument("connectionString", connectionString);
         }

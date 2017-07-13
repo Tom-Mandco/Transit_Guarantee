@@ -15,11 +15,11 @@
     public class FileWriter : IFileWriter
     {
         private readonly IDataHandler dataHandler;
-        private readonly IDataTableFactory dtFactory;
+        private readonly IDataTableMapper dtFactory;
         private static string outputDirectory;
         private static string outputFileName;
 
-        public FileWriter(IDataHandler dataHandler, IDataTableFactory dtFactory)
+        public FileWriter(IDataHandler dataHandler, IDataTableMapper dtFactory)
         {
             this.dataHandler = dataHandler;
             this.dtFactory = dtFactory;
