@@ -4,7 +4,7 @@
     using System.Data;
     using Models;
 
-    public interface IDataTableFactory
+    public interface IDataTableMapper
     {
         DataTable Return_ConsignmentData_ToDataTable(IEnumerable<Consignment> consignmentData);
     }

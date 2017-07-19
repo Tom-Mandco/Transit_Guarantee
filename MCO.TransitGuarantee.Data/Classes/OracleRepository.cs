@@ -1,10 +1,9 @@
 ﻿namespace MCO.TransitGuarantee.Data.Classes
 {
-    using System;
     using System.Linq;
     using System.Collections.Generic;
     using Interfaces;
-    using MandCo.Data;
+    using MCO.Data;
     using Models;
 
     public class OracleRepository : OracleBase, IRepository

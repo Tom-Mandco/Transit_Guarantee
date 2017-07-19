@@ -41,9 +41,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\CalculationHandler.cs" />
-    <Compile Include="Classes\DateTimeConcatenator.cs" />
+    <Compile Include="Classes\DataTableFactory.cs" />
     <Compile Include="Interfaces\ICalculationHandler.cs" />
-    <Compile Include="Interfaces\IDateTimeConcatenator.cs" />
+    <Compile Include="Interfaces\IDataTableFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
