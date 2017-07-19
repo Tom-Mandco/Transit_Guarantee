@@ -48,6 +48,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MCO.Data">
+      <HintPath>..\..\..\..\MCO\Lib\MCO.Data\obj\Release\MCO.Data.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
@@ -69,12 +72,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
-  <ItemGroup>
-    <ProjectReference Include="F:\dev\MCO\Lib\MCO.Data\MandCo.Data.csproj">
-      <Project>{b2e29057-6d25-425f-ae37-c54a5b9ea271}</Project>
-      <Name>MandCo.Data</Name>
-    </ProjectReference>
-  </ItemGroup>
   <ItemGroup>
     <Content Include="Sql\Check_ExchangeRatesAreCurrent.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
