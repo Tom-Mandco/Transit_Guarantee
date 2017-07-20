@@ -48,8 +48,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MCO.Data">
-      <HintPath>..\..\..\..\MCO\Lib\MCO.Data\obj\Release\MCO.Data.dll</HintPath>
+    <Reference Include="MCO.Data, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\MCO\Lib\MCO.Data\bin\Release\MCO.Data.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
