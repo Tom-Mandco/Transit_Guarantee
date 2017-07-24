@@ -58,7 +58,8 @@
 
         public Consignment Map_ConsignmentDataModel_ToViewModel(Consignment_DataModel _consignment, List<Invoice_Header> result_invoiceHeaders)
         {
-            DateTime dtCustomsBooked = Convert.ToDateTime(_consignment.Booked_In_Date);
+            DateTime dtCustomsBooked = Convert.ToDateTime(_consignment.Customs_Entered);
+            DateTime dtBookedInDate = Convert.ToDateTime(_consignment.Booked_In_Date);
             DateTime dtETAatPort = Convert.ToDateTime(_consignment.ETA_At_Port);
 
             int _deliveryStatus = Return_ConsignmentDeliveryStatus_ToInt(result_invoiceHeaders);
@@ -70,6 +71,7 @@
                 Carrier_Code = _consignment.Carrier_Code,
                 Transport_Company = _consignment.Ship_Nameetruck_plat,
                 Customs_Booked = dtCustomsBooked,
+                Booked_In_Date = dtBookedInDate,
                 ETA_At_Port = dtETAatPort,
                 Consignment_Delivery_Status = _deliveryStatus,
                 Invoice_Headers = result_invoiceHeaders
@@ -84,11 +86,11 @@
             bool allDelivered = true;
             bool activeDeliveries = false;
 
-            foreach(Invoice_Header _header in result_invoiceHeaders)
+            foreach (Invoice_Header _header in result_invoiceHeaders)
             {
-                foreach(Invoice_Detail _detail in _header.Invoice_Details)
+                foreach (Invoice_Detail _detail in _header.Invoice_Details)
                 {
-                    if(_detail.Date_of_WRC == new DateTime())
+                    if (_detail.Date_of_WRC == new DateTime())
                     {
                         allDelivered = false;
                     }
@@ -100,7 +102,7 @@
                 }
             }
 
-            if(allDelivered)
+            if (allDelivered)
             {
                 result = 2;
             }

@@ -1,6 +1,7 @@
 ﻿Select distinct shpCons.consignment_number,
        invHeader.Supplier_Invoice_No,
        countries.country_name,
+       countries.country_code,
        invDetail.Order_No,
        invDetail.Lot_No,
        invDetail.Commodity_Code,

@@ -61,12 +61,14 @@
                 #endregion
 
                 #region Write to File
+                
                 sectionTimeElapsed.Start();
                 fileWriter.Write_AllData_ToFile(consignmentData);
                 sectionTimeElapsed.Stop();
                 Console.WriteLine("Område tid: {0} | fileWriter (txt)", sectionTimeElapsed.Elapsed);
                 logger.Info("Område tid: {0} | fileWriter (txt)", sectionTimeElapsed.Elapsed);
                 sectionTimeElapsed.Reset();
+                
                 #endregion
 
                 #region Write to CSV

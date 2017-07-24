@@ -11,6 +11,7 @@
 
         public int Consignment_Number { get; set; }
 
+        public string Customs_Entered { get; set; }
         public string Booked_In_Date { get; set; }
         public string Booked_In_Time { get; set; }
         public string ETA_At_Port { get; set; }

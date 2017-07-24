@@ -12,10 +12,11 @@ namespace MCO.TransitGuarantee.Service.Classes
 
             result.Columns.Add("Consignment Number");
             result.Columns.Add("Consignment Status");
+            result.Columns.Add("ETA At Port");
+            result.Columns.Add("Customs Entered");
+            result.Columns.Add("Booked In Date");
             result.Columns.Add("Duty Value");
             result.Columns.Add("VAT Value");
-            result.Columns.Add("Total Value");
-            result.Columns.Add("Total Transit Value");
             result.Columns.Add("Active Transit Value");
             result.Columns.Add("Transit Guarantee Remaining");
 

@@ -21,7 +21,6 @@
 
         public DataTable Return_ConsignmentData_ToDataTable(IEnumerable<Consignment> consignmentData)
         {
-            string consigmentTotalValueKey = ConfigurationManager.AppSettings["ConsTotalValueKey"];
             string consigmentTotalVATKey = ConfigurationManager.AppSettings["ConsTotalVATKey"];
             string consigmentTotalDutyKey = ConfigurationManager.AppSettings["ConsTotalDutyKey"];
             string consigmentTotalInTransitKey = ConfigurationManager.AppSettings["ConsTotalInTransitKey"];
@@ -40,15 +39,21 @@
             {
                 Dictionary<string, decimal> _ConsignmentTotals = dataHandler.Return_ConsignmentTotals_ToDictionary(_consignment);
 
+                DateTime? nullDateTime = null;
+                var _etaAtPort = _consignment.ETA_At_Port > DateTime.MinValue ? _consignment.ETA_At_Port.Date : nullDateTime;
+                var _bookedInDate = _consignment.Booked_In_Date > DateTime.MinValue ? _consignment.Booked_In_Date.Date : nullDateTime;
+                var _customsEnteredDate = _consignment.Customs_Booked > DateTime.MinValue ? _consignment.Booked_In_Date.Date : nullDateTime;
+
                 transitGuaranteeRemaining -= _ConsignmentTotals[consigmentTotalInTransitKey];
                 fullConsignmentValue = _ConsignmentTotals[consigmentTotalVATKey] + _ConsignmentTotals[consigmentTotalDutyKey];
 
                 result.Rows.Add(_consignment.Consignment_Number,
                                 _consignment.Return_DeliveryStatus_ToString(),
+                                _etaAtPort,
+                                _customsEnteredDate,
+                                _bookedInDate,
                                 Math.Round(_ConsignmentTotals[consigmentTotalDutyKey], 2),
                                 Math.Round(_ConsignmentTotals[consigmentTotalVATKey], 2),
-                                Math.Round(_ConsignmentTotals[consigmentTotalValueKey], 2),
-                                Math.Round(fullConsignmentValue, 2),
                                 Math.Round(_ConsignmentTotals[consigmentTotalInTransitKey], 2),
                                 Math.Round(transitGuaranteeRemaining, 2)
                                 );

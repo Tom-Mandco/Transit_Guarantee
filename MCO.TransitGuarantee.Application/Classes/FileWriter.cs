@@ -35,7 +35,6 @@
 
         public void Write_AllData_ToFile(IEnumerable<Consignment> consignmentData)
         {
-            string consigmentTotalValueKey = ConfigurationManager.AppSettings["ConsTotalValueKey"];
             string consigmentTotalVATKey = ConfigurationManager.AppSettings["ConsTotalVATKey"];
             string consigmentTotalDutyKey = ConfigurationManager.AppSettings["ConsTotalDutyKey"];
             string consigmentTotalInTransitKey = ConfigurationManager.AppSettings["ConsTotalInTransitKey"];
@@ -55,10 +54,9 @@
                 transitGuaranteeRemaining -= _ConsignmentTotals[consigmentTotalInTransitKey];
                 fullConsignmentValue = _ConsignmentTotals[consigmentTotalVATKey] + _ConsignmentTotals[consigmentTotalDutyKey];
 
-                output_Breakdown.Add(string.Format("Consignment: {0} | Carrier Code: {1} | Total Value: {2} | Duty: {3} | VAT: {4} | Active Consignment Value: {5}",
+                output_Breakdown.Add(string.Format("Consignment: {0} | Carrier Code: {1} | Duty: {2} | VAT: {3} | Active Consignment Value: {4}",
                                    _consignment.Consignment_Number,
                                    _consignment.Carrier_Code,
-                                   _ConsignmentTotals[consigmentTotalValueKey].ToString("C2", CultureInfo.GetCultureInfo("en-GB")),
                                    _ConsignmentTotals[consigmentTotalVATKey].ToString("C2", CultureInfo.GetCultureInfo("en-GB")),
                                    _ConsignmentTotals[consigmentTotalDutyKey].ToString("C2", CultureInfo.GetCultureInfo("en-GB")),
                                    _ConsignmentTotals[consigmentTotalInTransitKey].ToString("C2", CultureInfo.GetCultureInfo("en-GB"))
@@ -87,10 +85,9 @@
                 }
 
 
-                output_Concise.Add(string.Format("[Status: {6}] [Active Transit Value: {0} / {7}] Consignment No: {1} | Total Value: {2} | Duty : {3} | VAT: {4} | Transit Guarantee Remaining: {5}",
+                output_Concise.Add(string.Format("[Status: {5}] [Active Transit Value: {0} / {6}] Consignment No: {1} | Duty : {2} | VAT: {3} | Transit Guarantee Remaining: {4}",
                                     _ConsignmentTotals[consigmentTotalInTransitKey],
                                     _consignment.Consignment_Number,
-                                    _ConsignmentTotals[consigmentTotalValueKey],
                                     _ConsignmentTotals[consigmentTotalVATKey],
                                     _ConsignmentTotals[consigmentTotalDutyKey],
                                     transitGuaranteeRemaining,
@@ -135,8 +132,12 @@
             var workSheet = newWorkbook.Worksheets.Add(dtConsignmentData, workbookName);
 
             workSheet.Cells("A2:A999").DataType = XLCellValues.Number;
-            workSheet.Cells("C2:H999").DataType = XLCellValues.Number;
-            workSheet.Cells("C2:H999").Style.NumberFormat.Format = "£ #,##0.00";
+
+            workSheet.Cells("C2:E999").DataType = XLCellValues.DateTime;
+            workSheet.Cells("C2:E999").Style.DateFormat.Format = "dd/mm/yyyy";
+
+            workSheet.Cells("F2:K999").DataType = XLCellValues.Number;
+            workSheet.Cells("F2:K999").Style.NumberFormat.Format = "£ #,##0.00";
 
             workSheet.Columns().AdjustToContents();
 

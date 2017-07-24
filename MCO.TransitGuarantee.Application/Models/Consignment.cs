@@ -13,6 +13,7 @@
         public string Transport_Company { get; set; }
 
         public DateTime Customs_Booked { get; set; }
+        public DateTime Booked_In_Date { get; set; }
         public DateTime ETA_At_Port { get; set; }
 
         public IEnumerable<Invoice_Header> Invoice_Headers { get; set; }
@@ -21,13 +22,16 @@
         {
             string result = "";
 
-            switch(Consignment_Delivery_Status)
+            switch (Consignment_Delivery_Status)
             {
-                case 0: result = "Delivered";
-                   break;
-                case 1: result = "Active";
+                case 0:
+                    result = "Delivered";
                     break;
-                case 2: result = "Forecast";
+                case 1:
+                    result = "Active";
+                    break;
+                case 2:
+                    result = "Forecast";
                     break;
             }
 

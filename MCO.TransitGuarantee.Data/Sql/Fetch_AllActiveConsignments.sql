@@ -7,5 +7,6 @@
        Inland_Depot
   From mackays.shp_consignments s
 Where  s.inland_depot in (@0)
-And    s.creation_date > sysdate - 30
+And    (s.creation_date > sysdate - 30
+Or     s.booked_in_date > sysdate - 7)
 Order by consignment_number asc
