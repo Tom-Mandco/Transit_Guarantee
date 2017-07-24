@@ -83,7 +83,7 @@
                     detailTotalVAT += (vat_C * VATRate3);
                     detailTotalVAT += (vat_D * VATRate4);
 
-                    if (_detail.orderInTransit || _consignment.Booked_In_Date > DateTime.Now.AddDays(-7))
+                    if (_detail.orderInTransit)
                     {
                         _invoiceTotalInTransit += (detailTotalDuty + detailTotalVAT);
                     }
