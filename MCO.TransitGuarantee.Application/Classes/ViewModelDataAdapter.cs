@@ -84,7 +84,8 @@
         {
             int result = 0;
             bool allDelivered = true;
-            bool activeDeliveries = false;
+            bool customsEntered = false;
+            bool ETAExceeded = false;
 
             foreach (Invoice_Header _header in result_invoiceHeaders)
             {
@@ -95,18 +96,38 @@
                         allDelivered = false;
                     }
 
-                    if (_detail.Date_of_Customs_Entry > new DateTime() || _detail.ETA_At_Port < DateTime.Now)
+                    if (_detail.Date_of_Customs_Entry > new DateTime())
                     {
-                        activeDeliveries = true;
+                        customsEntered = true;
+                    }
+
+                    else if(_detail.ETA_At_Port < DateTime.Now)
+                    {
+                        ETAExceeded = true;
                     }
                 }
             }
 
-            if (allDelivered)
+            result = Return_StatusCodeFromBooleans_ToInt(allDelivered, customsEntered, ETAExceeded);
+
+            return result;
+        }
+
+        private int Return_StatusCodeFromBooleans_ToInt(bool _allDelivered, bool _customsEntered, bool _eTAExceeded)
+        {
+            int result = 0;
+
+            if (_allDelivered)
+            {
+                result = 3;
+            }
+
+            else if (_customsEntered)
             {
                 result = 2;
             }
-            else if (activeDeliveries)
+
+            else if (_eTAExceeded)
             {
                 result = 1;
             }

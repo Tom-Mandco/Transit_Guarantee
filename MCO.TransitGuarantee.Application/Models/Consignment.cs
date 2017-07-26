@@ -25,13 +25,16 @@
             switch (Consignment_Delivery_Status)
             {
                 case 0:
-                    result = "Delivered";
+                    result = "Forecast";
                     break;
                 case 1:
-                    result = "Active";
+                    result = "ETA Exceeded";
                     break;
                 case 2:
-                    result = "Forecast";
+                    result = "Active";
+                    break;
+                case 3:
+                    result = "Delivered";
                     break;
             }
 

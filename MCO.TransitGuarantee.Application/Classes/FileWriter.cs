@@ -129,7 +129,10 @@
                                                     outputFileName,
                                                     ConfigurationManager.AppSettings["ExcelOutputFileExtension"]);
 
-            var workSheet = newWorkbook.Worksheets.Add(dtConsignmentData, workbookName);
+            var workSheet = newWorkbook.Worksheets.Add(workbookName);
+
+            var tableWithData = workSheet.Cell(1, 1).InsertTable(dtConsignmentData);
+            tableWithData.Theme = XLTableTheme.None;
 
             workSheet.Cells("A2:A999").DataType = XLCellValues.Number;
 

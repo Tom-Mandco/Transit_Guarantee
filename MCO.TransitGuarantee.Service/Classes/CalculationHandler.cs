@@ -16,11 +16,6 @@
                 {
                     result = true;
                 }
-                else if (_invoiceDetail.ETA_At_Port < DateTime.Now)
-                {
-                    //Kept in for detailed status code 
-                    result = true;
-                }
             }
 
             return result;
