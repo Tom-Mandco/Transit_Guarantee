@@ -11,6 +11,7 @@
         public string Inland_Depot { get; set; }
         public string Carrier_Code { get; set; }
         public string Transport_Company { get; set; }
+        public string Supplier_Name { get; set; }
 
         public DateTime Customs_Booked { get; set; }
         public DateTime Booked_In_Date { get; set; }

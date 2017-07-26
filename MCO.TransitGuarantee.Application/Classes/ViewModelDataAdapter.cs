@@ -74,7 +74,8 @@
                 Booked_In_Date = dtBookedInDate,
                 ETA_At_Port = dtETAatPort,
                 Consignment_Delivery_Status = _deliveryStatus,
-                Invoice_Headers = result_invoiceHeaders
+                Invoice_Headers = result_invoiceHeaders,
+                Supplier_Name = _consignment.Supplier_Name
             };
 
             return result;
