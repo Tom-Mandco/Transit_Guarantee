@@ -11,6 +11,7 @@ namespace MCO.TransitGuarantee.Service.Classes
             DataTable result = new DataTable();
 
             result.Columns.Add("Consignment Number");
+            result.Columns.Add("Supplier Name");
             result.Columns.Add("Consignment Status");
             result.Columns.Add("ETA At Port");
             result.Columns.Add("Customs Entered");

@@ -136,11 +136,11 @@
 
             workSheet.Cells("A2:A999").DataType = XLCellValues.Number;
 
-            workSheet.Cells("C2:E999").DataType = XLCellValues.DateTime;
-            workSheet.Cells("C2:E999").Style.DateFormat.Format = "dd/mm/yyyy";
+            workSheet.Cells("D2:F999").DataType = XLCellValues.DateTime;
+            workSheet.Cells("D2:F999").Style.DateFormat.Format = "dd/mm/yyyy";
 
-            workSheet.Cells("F2:K999").DataType = XLCellValues.Number;
-            workSheet.Cells("F2:K999").Style.NumberFormat.Format = "£ #,##0.00";
+            workSheet.Cells("G2:L999").DataType = XLCellValues.Number;
+            workSheet.Cells("G2:L999").Style.NumberFormat.Format = "£ #,##0.00";
 
             workSheet.Columns().AdjustToContents();
 

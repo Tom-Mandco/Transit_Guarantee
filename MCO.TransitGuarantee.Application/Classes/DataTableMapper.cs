@@ -42,12 +42,13 @@
                 DateTime? nullDateTime = null;
                 var _etaAtPort = _consignment.ETA_At_Port > DateTime.MinValue ? _consignment.ETA_At_Port.Date : nullDateTime;
                 var _bookedInDate = _consignment.Booked_In_Date > DateTime.MinValue ? _consignment.Booked_In_Date.Date : nullDateTime;
-                var _customsEnteredDate = _consignment.Customs_Booked > DateTime.MinValue ? _consignment.Booked_In_Date.Date : nullDateTime;
+                var _customsEnteredDate = _consignment.Customs_Booked > DateTime.MinValue ? _consignment.Customs_Booked.Date : nullDateTime;
 
                 transitGuaranteeRemaining -= _ConsignmentTotals[consigmentTotalInTransitKey];
                 fullConsignmentValue = _ConsignmentTotals[consigmentTotalVATKey] + _ConsignmentTotals[consigmentTotalDutyKey];
 
                 result.Rows.Add(_consignment.Consignment_Number,
+                                _consignment.Supplier_Name,
                                 _consignment.Return_DeliveryStatus_ToString(),
                                 _etaAtPort,
                                 _customsEnteredDate,

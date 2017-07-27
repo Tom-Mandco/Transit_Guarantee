@@ -83,7 +83,7 @@
                     detailTotalVAT += (vat_C * VATRate3);
                     detailTotalVAT += (vat_D * VATRate4);
 
-                    if (_detail.orderInTransit)
+                    if (_consignment.Order_In_Transit)
                     {
                         _invoiceTotalInTransit += (detailTotalDuty + detailTotalVAT);
                     }

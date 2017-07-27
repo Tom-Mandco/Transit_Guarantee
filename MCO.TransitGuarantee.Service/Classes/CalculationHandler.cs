@@ -6,13 +6,21 @@
 
     public class CalculationHandler : ICalculationHandler
     {
-        public bool Return_IsOrderInTransit_ToBool(InvoiceDetail_DataModel _invoiceDetail)
+        public bool Return_IsOrderInTransit_ToBool(Consignment_DataModel _consignment)
         {
             bool result = false;
 
-            if (_invoiceDetail.Confirmed_Date == new DateTime())
+            var _etaAtPort = DateTime.MinValue;
+            var _bookedInDate = DateTime.MinValue;
+            var _customsEnteredDate = DateTime.MinValue;
+
+            DateTime.TryParse(_consignment.ETA_At_Port, out _etaAtPort);
+            DateTime.TryParse(_consignment.Booked_In_Date, out _bookedInDate);
+            DateTime.TryParse(_consignment.Customs_Entered, out _customsEnteredDate);
+            
+            if (_customsEnteredDate > DateTime.MinValue)
             {
-                if (_invoiceDetail.Customs_Entered > new DateTime())
+                if(_bookedInDate == DateTime.MinValue || _bookedInDate > DateTime.Now.Date)
                 {
                     result = true;
                 }
@@ -54,5 +62,62 @@
 
             return result;
         }
+
+        public int Return_ConsignmentDeliveryStatus_ToInt(Consignment_DataModel _consignment)
+        {
+            int result = 0;
+
+            bool allDelivered = false;
+            bool customsEntered = false;
+            bool ETAExceeded = false;
+
+            var _etaAtPort = DateTime.MinValue;
+            var _bookedInDate = DateTime.MinValue;
+            var _customsEnteredDate = DateTime.MinValue;
+
+            DateTime.TryParse(_consignment.ETA_At_Port, out _etaAtPort);
+            DateTime.TryParse(_consignment.Booked_In_Date, out _bookedInDate);
+            DateTime.TryParse(_consignment.Customs_Entered, out _customsEnteredDate);
+
+            if(_bookedInDate > DateTime.MinValue && _bookedInDate <= DateTime.Now)
+            {
+                allDelivered = true;
+            }
+            else if(_customsEnteredDate > DateTime.MinValue)
+            {
+                customsEntered = true;
+            }
+            else if(_etaAtPort <= DateTime.Now.Date)
+            {
+                ETAExceeded = true;
+            }
+
+            result = Return_StatusCodeFromBooleans_ToInt(allDelivered, customsEntered, ETAExceeded);
+
+            return result;
+        }
+
+        private int Return_StatusCodeFromBooleans_ToInt(bool _allDelivered, bool _customsEntered, bool _eTAExceeded)
+        {
+            int result = 0;
+
+            if (_allDelivered)
+            {
+                result = 3;
+            }
+
+            else if (_customsEntered)
+            {
+                result = 2;
+            }
+
+            else if (_eTAExceeded)
+            {
+                result = 1;
+            }
+
+            return result;
+        }
+
     }
 }

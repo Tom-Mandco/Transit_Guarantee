@@ -50,7 +50,9 @@
                 sectionTimeElapsed.Start();
 
                 IEnumerable<Consignment> consignmentData = dataHandler.Return_AllActiveConsignments_ToViewModel();
-                consignmentData = consignmentData.OrderBy(x => x.Consignment_Delivery_Status);
+                consignmentData = consignmentData.OrderBy(x => x.Consignment_Delivery_Status)
+                                                 .ThenByDescending(x => x.ETA_At_Port)
+                                                 .ThenBy(x => x.Consignment_Number);
 
                 sectionTimeElapsed.Stop();
                 logger.Info("Område tid: {0} | dataHandler ", sectionTimeElapsed.Elapsed);
