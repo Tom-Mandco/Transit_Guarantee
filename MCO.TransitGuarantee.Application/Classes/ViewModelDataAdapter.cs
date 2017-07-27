@@ -20,8 +20,6 @@
 
         public Invoice_Detail Map_InvoiceDetailDataModel_ToViewModel(InvoiceDetail_DataModel _invoiceDetail)
         {
-            bool _orderInTransit = calculationHandler.Return_IsOrderInTransit_ToBool(_invoiceDetail);
-
             Invoice_Detail result = new Invoice_Detail()
             {
                 Order_No = _invoiceDetail.Order_No,
@@ -36,8 +34,7 @@
                 Commodity_Duty_Pct = _invoiceDetail.Duty_Per_Cent_Pcent,
                 Supplier_Discount_Pct = _invoiceDetail.Discount_Pcent,
                 Date_of_WRC = _invoiceDetail.Confirmed_Date,
-                ETA_At_Port = _invoiceDetail.ETA_At_Port,
-                orderInTransit = _orderInTransit
+                ETA_At_Port = _invoiceDetail.ETA_At_Port
             };
 
             return result;
@@ -58,10 +55,12 @@
 
         public Consignment Map_ConsignmentDataModel_ToViewModel(Consignment_DataModel _consignment, List<Invoice_Header> result_invoiceHeaders)
         {
-            DateTime dtCustomsBooked = Convert.ToDateTime(_consignment.Booked_In_Date);
+            DateTime dtCustomsBooked = Convert.ToDateTime(_consignment.Customs_Entered);
+            DateTime dtBookedInDate = Convert.ToDateTime(_consignment.Booked_In_Date);
             DateTime dtETAatPort = Convert.ToDateTime(_consignment.ETA_At_Port);
 
-            int _deliveryStatus = Return_ConsignmentDeliveryStatus_ToInt(result_invoiceHeaders);
+            int _deliveryStatus = calculationHandler.Return_ConsignmentDeliveryStatus_ToInt(_consignment);
+            bool _orderInTransit = calculationHandler.Return_IsOrderInTransit_ToBool(_consignment);
 
             Consignment result = new Consignment()
             {
@@ -70,9 +69,12 @@
                 Carrier_Code = _consignment.Carrier_Code,
                 Transport_Company = _consignment.Ship_Nameetruck_plat,
                 Customs_Booked = dtCustomsBooked,
+                Booked_In_Date = dtBookedInDate,
                 ETA_At_Port = dtETAatPort,
                 Consignment_Delivery_Status = _deliveryStatus,
-                Invoice_Headers = result_invoiceHeaders
+                Invoice_Headers = result_invoiceHeaders,
+                Supplier_Name = _consignment.Supplier_Name,
+                Order_In_Transit = _orderInTransit
             };
 
             return result;
@@ -82,29 +84,53 @@
         {
             int result = 0;
             bool allDelivered = true;
-            bool activeDeliveries = false;
+            bool customsEntered = false;
+            bool ETAExceeded = false;
 
-            foreach(Invoice_Header _header in result_invoiceHeaders)
+            if (result_invoiceHeaders.Count > 0)
             {
-                foreach(Invoice_Detail _detail in _header.Invoice_Details)
+                foreach (Invoice_Header _header in result_invoiceHeaders)
                 {
-                    if(_detail.Date_of_WRC == new DateTime())
+                    foreach (Invoice_Detail _detail in _header.Invoice_Details)
                     {
-                        allDelivered = false;
-                    }
+                        if (_detail.Date_of_WRC == DateTime.MinValue)
+                        {
+                            allDelivered = false;
+                        }
 
-                    if (_detail.Date_of_Customs_Entry > new DateTime() || _detail.ETA_At_Port < DateTime.Now)
-                    {
-                        activeDeliveries = true;
+                        if (_detail.Date_of_Customs_Entry > DateTime.MinValue)
+                        {
+                            customsEntered = true;
+                        }
+
+                        else if (_detail.ETA_At_Port < DateTime.Now)
+                        {
+                            ETAExceeded = true;
+                        }
                     }
                 }
+
+                result = Return_StatusCodeFromBooleans_ToInt(allDelivered, customsEntered, ETAExceeded);
             }
 
-            if(allDelivered)
+            return result;
+        }
+
+        private int Return_StatusCodeFromBooleans_ToInt(bool _allDelivered, bool _customsEntered, bool _eTAExceeded)
+        {
+            int result = 0;
+
+            if (_allDelivered)
+            {
+                result = 3;
+            }
+
+            else if (_customsEntered)
             {
                 result = 2;
             }
-            else if (activeDeliveries)
+
+            else if (_eTAExceeded)
             {
                 result = 1;
             }

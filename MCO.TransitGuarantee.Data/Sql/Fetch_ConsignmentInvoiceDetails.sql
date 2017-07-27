@@ -1,6 +1,7 @@
 ﻿Select distinct shpCons.consignment_number,
        invHeader.Supplier_Invoice_No,
        countries.country_name,
+       countries.country_code,
        invDetail.Order_No,
        invDetail.Lot_No,
        invDetail.Commodity_Code,
@@ -11,7 +12,8 @@
        invDetail.Vat_d_Inv_Value,
        supp.discount_pcent,
        wrc.Confirmed_Date,
-       shpCons.Eta_At_Port
+       shpCons.Eta_At_Port,
+       shpCons.Customs_Entered
   From shp_consignments shpCons,
        shp_commodity_codes shpComms,
        shp_supplier_inv_hdr invHeader,

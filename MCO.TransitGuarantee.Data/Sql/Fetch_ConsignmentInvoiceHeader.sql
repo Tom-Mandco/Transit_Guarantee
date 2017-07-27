@@ -11,7 +11,7 @@
 Where  shpCons.Consignment_Number = invHeader.Consignment_No
 And    shpCons.Consignment_Number = @0
 And    (invHeader.Invoice_Currency = exchRates.To_Country_Code
-And    (Extract(Month From exchRates.effective_date) = Extract(Month From shpCons.Creation_Date))
-And     Extract (Year from exchRates.Effective_Date) = Extract (Year from shpCons.Creation_Date))
+And    (Extract(Month From sysdate) = Extract(Month From exchRates.Effective_Date))
+And     Extract (Year from sysdate) = Extract (Year from exchRates.Effective_Date))
 Order By shpCons.Consignment_Number,
          invHeader.Supplier_Invoice_No Asc

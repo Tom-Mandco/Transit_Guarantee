@@ -11,8 +11,12 @@
         public string Inland_Depot { get; set; }
         public string Carrier_Code { get; set; }
         public string Transport_Company { get; set; }
+        public string Supplier_Name { get; set; }
+
+        public bool Order_In_Transit { get; set; }
 
         public DateTime Customs_Booked { get; set; }
+        public DateTime Booked_In_Date { get; set; }
         public DateTime ETA_At_Port { get; set; }
 
         public IEnumerable<Invoice_Header> Invoice_Headers { get; set; }
@@ -21,13 +25,19 @@
         {
             string result = "";
 
-            switch(Consignment_Delivery_Status)
+            switch (Consignment_Delivery_Status)
             {
-                case 0: result = "Delivered";
-                   break;
-                case 1: result = "Active";
+                case 0:
+                    result = "Forecast";
                     break;
-                case 2: result = "Forecast";
+                case 1:
+                    result = "ETA Exceeded";
+                    break;
+                case 2:
+                    result = "Active";
+                    break;
+                case 3:
+                    result = "Delivered";
                     break;
             }
 

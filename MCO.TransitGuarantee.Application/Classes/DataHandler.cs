@@ -8,6 +8,7 @@
     using System;
     using System.Collections.Generic;
     using System.Configuration;
+    using System.Linq;
 
     public class DataHandler : IDataHandler
     {
@@ -16,6 +17,7 @@
         private readonly ICalculationHandler calculationHandler;
 
         private static string InlandDepotList;
+        private static string[] DutyFreeCountryCodeList;
 
         public DataHandler(IPerformLookup performLookup, IViewModelDataAdapter viewModelAdapter, ICalculationHandler calculationHandler)
         {
@@ -24,13 +26,13 @@
             this.calculationHandler = calculationHandler;
 
             InlandDepotList = ConfigurationManager.AppSettings["InlandDepotList"];
+            DutyFreeCountryCodeList = ConfigurationManager.AppSettings["DutyFreeCountryCodeList"].Split(';');
         }
 
         public Dictionary<string, decimal> Return_ConsignmentTotals_ToDictionary(Consignment _consignment)
         {
             Dictionary<string, decimal> result = new Dictionary<string, decimal>();
 
-            string consigmentTotalValueKey = ConfigurationManager.AppSettings["ConsTotalValueKey"];
             string consigmentTotalVATKey = ConfigurationManager.AppSettings["ConsTotalVATKey"];
             string consigmentTotalDutyKey = ConfigurationManager.AppSettings["ConsTotalDutyKey"];
             string consigmentTotalInTransitKey = ConfigurationManager.AppSettings["ConsTotalInTransitKey"];
@@ -40,63 +42,57 @@
             decimal VATRate3 = Convert.ToDecimal(ConfigurationManager.AppSettings["VATRate3"]);
             decimal VATRate4 = Convert.ToDecimal(ConfigurationManager.AppSettings["VATRate4"]);
 
-            decimal _invoiceTotalValue = 0;
             decimal _invoiceTotalVAT = 0;
             decimal _invoiceTotalDuty = 0;
             decimal _invoiceTotalInTransit = 0;
 
-            decimal detailTotalValue;
             decimal detailTotalVAT;
             decimal detailTotalDuty;
 
-            decimal vat_A_WithSupplierDiscount;
-            decimal vat_B_WithSupplierDiscount;
-            decimal vat_C_WithSupplierDiscount;
-            decimal vat_D_WithSupplierDiscount;
+            decimal vat_A;
+            decimal vat_B;
+            decimal vat_C;
+            decimal vat_D;
 
             foreach (Invoice_Header _header in _consignment.Invoice_Headers)
             {
                 foreach (Invoice_Detail _detail in _header.Invoice_Details)
                 {
-                    vat_A_WithSupplierDiscount = ((_detail.Vat_A_Value + ((_detail.Vat_A_Value / 100) * _detail.Supplier_Discount_Pct)) * _header.Exchange_Rate);
-                    vat_B_WithSupplierDiscount = ((_detail.Vat_B_Value + ((_detail.Vat_B_Value / 100) * _detail.Supplier_Discount_Pct)) * _header.Exchange_Rate);
-                    vat_C_WithSupplierDiscount = ((_detail.Vat_C_Value + ((_detail.Vat_C_Value / 100) * _detail.Supplier_Discount_Pct)) * _header.Exchange_Rate);
-                    vat_D_WithSupplierDiscount = ((_detail.Vat_D_Value + ((_detail.Vat_D_Value / 100) * _detail.Supplier_Discount_Pct)) * _header.Exchange_Rate);
-
-                    detailTotalValue = 0;
                     detailTotalVAT = 0;
                     detailTotalDuty = 0;
 
-                    detailTotalValue += vat_A_WithSupplierDiscount;
-                    detailTotalValue += vat_B_WithSupplierDiscount;
-                    detailTotalValue += vat_C_WithSupplierDiscount;
-                    detailTotalValue += vat_D_WithSupplierDiscount;
+                    vat_A = calculationHandler.Return_LocalizedVAT_ToDecimal(_detail.Vat_A_Value, _header.Exchange_Rate);
+                    vat_A = calculationHandler.Return_VATWithSupplierDiscount_ToDecimal(vat_A, _detail.Supplier_Discount_Pct);
 
-                    if (_detail.Country_Code != "TR" || _detail.Country_Code != "BD")
+                    vat_B = calculationHandler.Return_LocalizedVAT_ToDecimal(_detail.Vat_B_Value, _header.Exchange_Rate);
+                    vat_B = calculationHandler.Return_VATWithSupplierDiscount_ToDecimal(vat_B, _detail.Supplier_Discount_Pct);
+
+                    vat_C = calculationHandler.Return_LocalizedVAT_ToDecimal(_detail.Vat_C_Value, _header.Exchange_Rate);
+                    vat_C = calculationHandler.Return_VATWithSupplierDiscount_ToDecimal(vat_C, _detail.Supplier_Discount_Pct);
+
+                    vat_D = calculationHandler.Return_LocalizedVAT_ToDecimal(_detail.Vat_D_Value, _header.Exchange_Rate);
+                    vat_D = calculationHandler.Return_VATWithSupplierDiscount_ToDecimal(vat_D, _detail.Supplier_Discount_Pct);
+
+                    if (!DutyFreeCountryCodeList.Contains(_detail.Country_Code) && _detail.Commodity_Duty_Pct > 0)
                     {
-                        detailTotalVAT += (vat_A_WithSupplierDiscount * VATRate1);
-                        detailTotalVAT += (vat_B_WithSupplierDiscount * VATRate2);
-                        detailTotalVAT += (vat_C_WithSupplierDiscount * VATRate3);
-                        detailTotalVAT += (vat_D_WithSupplierDiscount * VATRate4);
+                        detailTotalDuty += calculationHandler.Return_DutyDue_ToDecimal(vat_A, vat_B, vat_C, vat_D, _detail.Commodity_Duty_Pct);
                     }
 
-                    detailTotalDuty += (vat_A_WithSupplierDiscount * (_detail.Commodity_Duty_Pct / 100));
-                    detailTotalDuty += (vat_B_WithSupplierDiscount * (_detail.Commodity_Duty_Pct / 100));
-                    detailTotalDuty += (vat_C_WithSupplierDiscount * (_detail.Commodity_Duty_Pct / 100));
-                    detailTotalDuty += (vat_D_WithSupplierDiscount * (_detail.Commodity_Duty_Pct / 100));
+                    detailTotalVAT += ((vat_A + detailTotalDuty) * VATRate1);
+                    detailTotalVAT += (vat_B * VATRate2);
+                    detailTotalVAT += (vat_C * VATRate3);
+                    detailTotalVAT += (vat_D * VATRate4);
 
-                    _invoiceTotalValue += detailTotalValue;
-                    _invoiceTotalVAT += detailTotalVAT;
-                    _invoiceTotalDuty += detailTotalDuty;
-
-                    if (_detail.orderInTransit)
+                    if (_consignment.Order_In_Transit)
                     {
                         _invoiceTotalInTransit += (detailTotalDuty + detailTotalVAT);
                     }
+
+                    _invoiceTotalVAT += detailTotalVAT;
+                    _invoiceTotalDuty += detailTotalDuty;
                 }
             }
 
-            result.Add(consigmentTotalValueKey, _invoiceTotalValue);
             result.Add(consigmentTotalVATKey, _invoiceTotalVAT);
             result.Add(consigmentTotalDutyKey, _invoiceTotalDuty);
             result.Add(consigmentTotalInTransitKey, _invoiceTotalInTransit);
