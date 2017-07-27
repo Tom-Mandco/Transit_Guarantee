@@ -18,6 +18,7 @@ namespace MCO.TransitGuarantee.Service.Classes
             result.Columns.Add("Booked In Date");
             result.Columns.Add("Duty Value");
             result.Columns.Add("VAT Value");
+            result.Columns.Add("Total Transit Value");
             result.Columns.Add("Active Transit Value");
             result.Columns.Add("Transit Guarantee Remaining");
 

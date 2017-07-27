@@ -55,6 +55,7 @@
                                 _bookedInDate,
                                 Math.Round(_ConsignmentTotals[consigmentTotalDutyKey], 2),
                                 Math.Round(_ConsignmentTotals[consigmentTotalVATKey], 2),
+                                Math.Round((_ConsignmentTotals[consigmentTotalDutyKey] + _ConsignmentTotals[consigmentTotalVATKey]), 2),
                                 Math.Round(_ConsignmentTotals[consigmentTotalInTransitKey], 2),
                                 Math.Round(transitGuaranteeRemaining, 2)
                                 );
